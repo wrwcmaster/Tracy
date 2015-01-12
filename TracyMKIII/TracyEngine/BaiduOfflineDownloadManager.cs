@@ -29,7 +29,7 @@ namespace Tracy
         {
             var torrentFileInfo = DmhyTorrentDownloader.Download(res.Link, null);
             //todo: rename file
-            BaiduOfflineDownloadTask task = new BaiduOfflineDownloadTask() { Status = 0, ResourceId = res.Id, LocalTorrentPath = torrentFileInfo.TempFilePath };
+            BaiduOfflineDownloadTask task = new BaiduOfflineDownloadTask() { Status = 0, ResourceId = res.Id, EntryId = entry.Id, LocalTorrentPath = torrentFileInfo.TempFilePath };
             _provider.Collection.Insert(task);
             return task;
         }

@@ -46,6 +46,11 @@ namespace Tracy
             _downloadManager = new BaiduOfflineDownloadManager(_database);
         }
 
+        public void SyncResource()
+        {
+            _dmhySource.Sync();
+        }
+
         private void DmhySource_OnResourcesFound(object sender, GenericEventArgs<List<Resource>> e)
         {
             ProcessTracingResources(e.Item);
@@ -54,7 +59,8 @@ namespace Tracy
         private void ProcessTracingResources(List<Resource> list)
         {
             var entries = _entryProvider.Collection.Find(Query<Entry>.EQ(e => e.TracingEnabled, true)).ToList();
-            foreach(Resource res in list){
+            foreach (Resource res in list)
+            {
                 Entry matchedEntry = null;
                 foreach (Entry entry in entries)
                 {
@@ -65,6 +71,7 @@ namespace Tracy
                         if (!entry.ResourceIds.Contains(res.Id))
                         {
                             entry.ResourceIds.Add(res.Id);
+                            _entryProvider.Collection.Save(entry);
                             break; //TODO: multiple match
                         }
                     }
@@ -81,6 +88,7 @@ namespace Tracy
         {
             var task = _downloadManager.CreateTask(entry, res);
             res.Status = 1;
+            _resourceProvider.Collection.Save(res);
             _downloadManager.StartTask(task);
         }
     }

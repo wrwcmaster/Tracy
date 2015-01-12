@@ -3,8 +3,57 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{DDEBC11A-F741-435C-8FFB-CBDD1AE61036}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{EDD02AE6-A51D-422E-8160-A816D87729AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TracyServerPlugin", "Server\TracyServerPlugin\TracyServerPlugin.csproj", "{1FEA7435-9DBB-43F7-AE00-E01000021887}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TracyEngine", "TracyEngine\TracyEngine.csproj", "{8F49FE56-F7E0-4358-90A4-C2E06BDB6450}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{30C15B20-4A6E-405E-8877-97D7A429E91C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonLib", "..\..\CommonLib\CommonLib\CommonLib.csproj", "{C586E3C8-1870-4054-833E-CF4322C31E44}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PluginCore", "..\..\CommonLib\Plugin\PluginCore\PluginCore.csproj", "{D6A58963-F72D-4E17-BC0B-241CC2923FB4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaiduPanAPI", "..\..\BaiduPanAPI\BaiduPanAPI\BaiduPanAPI.csproj", "{81320D4E-94D6-40B9-9C51-41659706839D}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1FEA7435-9DBB-43F7-AE00-E01000021887}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FEA7435-9DBB-43F7-AE00-E01000021887}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FEA7435-9DBB-43F7-AE00-E01000021887}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FEA7435-9DBB-43F7-AE00-E01000021887}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F49FE56-F7E0-4358-90A4-C2E06BDB6450}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F49FE56-F7E0-4358-90A4-C2E06BDB6450}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F49FE56-F7E0-4358-90A4-C2E06BDB6450}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F49FE56-F7E0-4358-90A4-C2E06BDB6450}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C586E3C8-1870-4054-833E-CF4322C31E44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C586E3C8-1870-4054-833E-CF4322C31E44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C586E3C8-1870-4054-833E-CF4322C31E44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C586E3C8-1870-4054-833E-CF4322C31E44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6A58963-F72D-4E17-BC0B-241CC2923FB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6A58963-F72D-4E17-BC0B-241CC2923FB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6A58963-F72D-4E17-BC0B-241CC2923FB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6A58963-F72D-4E17-BC0B-241CC2923FB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81320D4E-94D6-40B9-9C51-41659706839D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81320D4E-94D6-40B9-9C51-41659706839D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81320D4E-94D6-40B9-9C51-41659706839D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81320D4E-94D6-40B9-9C51-41659706839D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1FEA7435-9DBB-43F7-AE00-E01000021887} = {DDEBC11A-F741-435C-8FFB-CBDD1AE61036}
+		{8F49FE56-F7E0-4358-90A4-C2E06BDB6450} = {DDEBC11A-F741-435C-8FFB-CBDD1AE61036}
+		{C586E3C8-1870-4054-833E-CF4322C31E44} = {30C15B20-4A6E-405E-8877-97D7A429E91C}
+		{D6A58963-F72D-4E17-BC0B-241CC2923FB4} = {30C15B20-4A6E-405E-8877-97D7A429E91C}
+		{81320D4E-94D6-40B9-9C51-41659706839D} = {30C15B20-4A6E-405E-8877-97D7A429E91C}
 	EndGlobalSection
 EndGlobal

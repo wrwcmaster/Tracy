@@ -30,8 +30,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="HtmlAgilityPack">
+      <HintPath>..\3rdParty\HtmlAgilityPack\HtmlAgilityPack.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Bson">
+      <HintPath>..\3rdParty\MangoDBDriver\MongoDB.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver">
+      <HintPath>..\3rdParty\MangoDBDriver\MongoDB.Driver.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -39,8 +49,33 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="DataAccess\BaiduOfflineDownloadTaskProvider.cs" />
+    <Compile Include="DataModel\BaiduOfflineDownloadTask.cs" />
+    <Compile Include="BaiduOfflineDownloadManager.cs" />
+    <Compile Include="DataAccess\MediaFileProvider.cs" />
+    <Compile Include="DataAccess\EntryProvider.cs" />
+    <Compile Include="DataAccess\ResourceProvider.cs" />
+    <Compile Include="DataAccess\TracyDB.cs" />
+    <Compile Include="DataModel\Entry.cs" />
+    <Compile Include="DataModel\MediaFile.cs" />
+    <Compile Include="ResourceSource\Dmhy\DmhyHtmlParser.cs" />
+    <Compile Include="ResourceSource\Dmhy\DmhyResourceSource.cs" />
+    <Compile Include="ResourceSource\Dmhy\DmhyTorrentDownloader.cs" />
+    <Compile Include="ResourceSource\IResourceSource.cs" />
+    <Compile Include="DataModel\Resource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TracyFacade.cs" />
+    <Compile Include="TracyManager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\BaiduPanAPI\BaiduPanAPI\BaiduPanAPI.csproj">
+      <Project>{81320d4e-94d6-40b9-9c51-41659706839d}</Project>
+      <Name>BaiduPanAPI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\CommonLib\CommonLib\CommonLib.csproj">
+      <Project>{c586e3c8-1870-4054-833e-cf4322c31e44}</Project>
+      <Name>CommonLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
