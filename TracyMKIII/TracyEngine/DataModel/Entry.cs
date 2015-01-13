@@ -20,7 +20,7 @@ namespace Tracy.DataModel
         public bool IsTitleMatched(string title)
         {
             Regex regEx = new Regex(RegExpr.ToUpper());
-            return regEx.Match(title).Success;
+            return regEx.Match(title.ToUpper()).Success;
         }
     }
 }
