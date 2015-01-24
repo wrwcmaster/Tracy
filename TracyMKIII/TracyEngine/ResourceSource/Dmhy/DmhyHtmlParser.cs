@@ -59,9 +59,9 @@ namespace Tracy.ResourceSource.Dmhy
                             HtmlNode titleNode = node.SelectSingleNode("td[@class='title']/a");
                             string title = titleNode.InnerText.Trim();
 
-                            HtmlNode linkNode = node.SelectSingleNode("td/a[@class='download-arrow arrow-torrent']");
-                            string link = "http://share.dmhy.org" + linkNode.Attributes["href"].Value;
-                            matchedItems.Add(new Resource() { Title = title, Link = link, PublishDate = publishDate, Type = "Torrent", Source = sourceName, Status = 0 });
+                            HtmlNode linkNode = node.SelectSingleNode("td/a[@class='download-arrow arrow-magnet']");
+                            string link = linkNode.Attributes["href"].Value;
+                            matchedItems.Add(new Resource() { Title = title, Link = link, PublishDate = publishDate, Type = "Magnet", Source = sourceName, Status = 0 });
                         }
                         catch (Exception ex)
                         {

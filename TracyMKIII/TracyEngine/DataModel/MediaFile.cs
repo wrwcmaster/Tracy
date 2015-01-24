@@ -15,6 +15,7 @@ namespace Tracy.DataModel
         public string Url { get; set; }
         public string Type { get; set; }
         public DateTime CreateDate { get; set; }
+        public DateTime CompleteDate { get; set; }
         public int Status { get; set; }
     }
 }

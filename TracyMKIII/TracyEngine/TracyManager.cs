@@ -31,7 +31,7 @@ namespace Tracy
         {
             get { return _mediaFileProvider; }
         }
-        private BaiduOfflineDownloadManager _downloadManager;
+        private ThunderOfflineDownloadManager _downloadManager;
         private DmhyResourceSource _dmhySource;
         public TracyManager()
         {
@@ -43,7 +43,7 @@ namespace Tracy
             _dmhySource = new DmhyResourceSource(_resourceProvider);
             _dmhySource.OnResourcesFound += DmhySource_OnResourcesFound;
 
-            _downloadManager = new BaiduOfflineDownloadManager(_database);
+            _downloadManager = new ThunderOfflineDownloadManager(_database, "username", "password");
         }
 
         public void SyncResource()
@@ -89,7 +89,7 @@ namespace Tracy
             var task = _downloadManager.CreateTask(entry, res);
             res.Status = 1;
             _resourceProvider.Collection.Save(res);
-            _downloadManager.StartTask(task);
+            _downloadManager.MonitorOnGoingTasks();
         }
     }
 }
