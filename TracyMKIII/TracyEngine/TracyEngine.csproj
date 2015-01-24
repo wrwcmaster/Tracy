@@ -49,6 +49,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataAccess\ThunderOfflineDownloadTaskProvider.cs" />
+    <Compile Include="DataModel\ThunderOfflineDownloadTask.cs" />
+    <Compile Include="ThunderOfflineDownloadManager.cs" />
     <Compile Include="DataAccess\BaiduOfflineDownloadTaskProvider.cs" />
     <Compile Include="DataModel\BaiduOfflineDownloadTask.cs" />
     <Compile Include="BaiduOfflineDownloadManager.cs" />
@@ -75,6 +78,10 @@
     <ProjectReference Include="..\..\..\CommonLib\CommonLib\CommonLib.csproj">
       <Project>{c586e3c8-1870-4054-833e-cf4322c31e44}</Project>
       <Name>CommonLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\ThunderOfflineDownloadAPI\ThunderAPI\ThunderAPI.csproj">
+      <Project>{90e6ca08-1384-4eed-b8d5-a51abe1c3ec0}</Project>
+      <Name>ThunderAPI</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

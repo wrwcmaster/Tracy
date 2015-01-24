@@ -17,11 +17,11 @@ namespace Tracy.DataAccess
             _db = database;
         }
 
-        public MongoCollection<BaiduOfflineDownloadTask> Collection
+        public MongoCollection<ThunderOfflineDownloadTask> Collection
         {
             get
             {
-                return _db.GetCollection<BaiduOfflineDownloadTask>("thunder_offline_download_task");
+                return _db.GetCollection<ThunderOfflineDownloadTask>("thunder_offline_download_task");
             }
         }
     }
