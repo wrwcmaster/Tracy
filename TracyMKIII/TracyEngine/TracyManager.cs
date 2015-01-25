@@ -3,6 +3,7 @@ using MongoDB.Bson;
 using MongoDB.Driver.Builders;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,7 +44,18 @@ namespace Tracy
             _dmhySource = new DmhyResourceSource(_resourceProvider);
             _dmhySource.OnResourcesFound += DmhySource_OnResourcesFound;
 
-            _downloadManager = new ThunderOfflineDownloadManager(_database, "username", "password");
+            InitDownloadManager();
+        }
+
+        private void InitDownloadManager()
+        {
+            using (var sr = new StreamReader("thunder.ini"))
+            {
+                string userName = sr.ReadLine();
+                string password = sr.ReadLine();
+                _downloadManager = new ThunderOfflineDownloadManager(_database, userName, password);
+            }
+            
         }
 
         public void SyncResource()
