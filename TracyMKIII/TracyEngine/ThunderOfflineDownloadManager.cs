@@ -11,6 +11,7 @@ using ThunderAPI;
 using Tracy.DataAccess;
 using Tracy.DataModel;
 using Tracy.ResourceSource.Dmhy;
+using Gaia.Common.Collections;
 
 namespace Tracy
 {
@@ -27,6 +28,42 @@ namespace Tracy
 
         public ThunderOfflineDownloadTask CreateTask(Entry entry, Resource res)
         {
+            ThunderOfflineDownloadTask task = new ThunderOfflineDownloadTask() { Status = 0, ResourceId = res.Id, EntryId = entry.Id };
+            _provider.Collection.Insert(task);
+            return task;
+        }
+
+        public void CheckOnGoingTasks()
+        {
+            var onGoingTasks = _provider.Collection.Find(Query<ThunderOfflineDownloadTask>.LT(t => t.Status, 2)).ToList();
+            if (onGoingTasks.Count > 0)
+            {
+                foreach (var task in onGoingTasks)
+                {
+                    try
+                    {
+                        if (task.Status == 0)
+                        {
+                            StartTask(task);
+                        }
+                        else if (task.Status == 1)
+                        {
+                            CheckTask(task);
+                        }  
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("[ERROR] " + ex.Message);
+                    }
+                    System.Threading.Thread.Sleep(1000);
+                }
+            }
+        }
+
+        public void StartTask(ThunderOfflineDownloadTask task)
+        {
+            Resource res = TracyFacade.Instance.Manager.ResourceProvider.Collection.FindOneById(task.ResourceId);
+            Console.WriteLine("Starting task " + res.Title);
             BtTaskCommitResponse commitResponse = null;
             string cid = null;
             if (String.Equals(res.Type, "Torrent", StringComparison.OrdinalIgnoreCase))
@@ -34,38 +71,32 @@ namespace Tracy
                 var torrentFileInfo = DmhyTorrentDownloader.Download(res.Link, null);
                 var uploadResponse = _agent.UploadTorrent(torrentFileInfo.PreferredName, new FileStream(torrentFileInfo.TempFilePath, FileMode.Open));
                 cid = uploadResponse.Cid;
+                System.Threading.Thread.Sleep(1000);
                 commitResponse = _agent.CommitBtTask(uploadResponse.Cid, uploadResponse.GetIndexArray());
             }
             else
             {
                 var urlQueryResponse = _agent.QueryUrl(res.Link);
                 cid = urlQueryResponse.Cid;
+                System.Threading.Thread.Sleep(1000);
                 commitResponse = _agent.CommitBtTask(urlQueryResponse.Cid, urlQueryResponse.GetIndexArray());
             }
 
-            ThunderOfflineDownloadTask task = new ThunderOfflineDownloadTask() { Status = 0, ResourceId = res.Id, EntryId = entry.Id, Cid = cid, TaskId = commitResponse.TaskId };
-            _provider.Collection.Insert(task);
-            return task;
-        }
-
-        public void MonitorOnGoingTasks()
-        {
-            var onGoingTasks = _provider.Collection.Find(Query<ThunderOfflineDownloadTask>.EQ(t => t.Status, 0)).ToList();
-            if (onGoingTasks.Count > 0)
-            {
-                foreach (var task in onGoingTasks)
-                {
-                    CheckTask(task);
-                }
-            }
+            task.Cid = cid;
+            task.TaskId = commitResponse.TaskId;
+            task.Status = 1;
+            _provider.Collection.Save(task);
+            Console.WriteLine("Committed task " + res.Title);
         }
 
         private void CheckTask(ThunderOfflineDownloadTask task)
         {
+            Resource res = TracyFacade.Instance.Manager.ResourceProvider.Collection.FindOneById(task.ResourceId);
+            Console.WriteLine("Checking progress for task " + res.Title);
             var detail = _agent.QueryBTDetail(task.Cid, task.TaskId, 1);
             var remoteFileList = detail.FileList;
             var fileList = new List<MediaFile>();
-            foreach (var fileId in task.FileIds)
+            foreach (var fileId in task.FileIds.GetSafeEnumerable())
             {
                 var file = TracyFacade.Instance.Manager.MediaFileProvider.Collection.FindOneById(fileId);
                 fileList.Add(file);
@@ -102,7 +133,8 @@ namespace Tracy
 
             if (completeCount == remoteFileList.Count)
             {
-                task.Status = 1;
+                Console.WriteLine("Download completed for task " + res.Title);
+                task.Status = 2;
                 _provider.Collection.Save(task);
             }
         }

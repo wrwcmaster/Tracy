@@ -78,6 +78,7 @@ namespace Tracy
                 {
                     if (entry.IsTitleMatched(res.Title))
                     {
+                        Console.WriteLine("Resource " + res.Title + " matched entry " + entry.Name);
                         matchedEntry = entry;
                         if (entry.ResourceIds == null) entry.ResourceIds = new List<ObjectId>();
                         if (!entry.ResourceIds.Contains(res.Id))
@@ -98,10 +99,29 @@ namespace Tracy
 
         public void DownloadResource(Entry entry, Resource res)
         {
+            Console.WriteLine("Create download task for resource " + res.Title);
             var task = _downloadManager.CreateTask(entry, res);
             res.Status = 1;
             _resourceProvider.Collection.Save(res);
-            _downloadManager.MonitorOnGoingTasks();
+            //_downloadManager.CheckOnGoingTasks();
+        }
+
+        public void CheckTasks()
+        {
+            _downloadManager.CheckOnGoingTasks();
+        }
+
+        public void Test()
+        {
+            var entry = _entryProvider.Collection.FindOne();
+            List<Resource> resources = _resourceProvider.FindResource(entry.SearchKeywords);
+            foreach (var res in resources)
+            {
+                if (!entry.ResourceIds.Contains(res.Id))
+                {
+                    entry.ResourceIds.Add(res.Id);
+                }
+            }
         }
     }
 }
