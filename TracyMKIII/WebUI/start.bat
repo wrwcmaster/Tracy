@@ -1,0 +1,1 @@
+set DEBUG=tracy & node .\bin\www

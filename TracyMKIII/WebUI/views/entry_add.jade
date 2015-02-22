@@ -1,0 +1,10 @@
+extends layout
+
+block content
+    ul(data-role='listview')
+        each resource in resources
+            li(data-icon='arrow-d')
+                a(href= '#')
+                    h2= resource['title']
+                    p= formatDate(resource['publish-date'])
+                    a.ui-btn.ui-btn-inline(href= resource['link'])= resource['type']

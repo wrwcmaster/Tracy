@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace Tracy.DataModel
 {
-    public class BaiduOfflineDownloadTask
+    public class BaiduOfflineDownloadTask : BaseMongoModel
     {
-        public ObjectId Id { get; set; }
         public ObjectId ResourceId { get; set; }
         public ObjectId EntryId { get; set; }
         public string LocalTorrentPath { get; set; }

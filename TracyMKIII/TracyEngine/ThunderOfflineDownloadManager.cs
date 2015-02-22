@@ -28,7 +28,7 @@ namespace Tracy
 
         public ThunderOfflineDownloadTask CreateTask(Entry entry, Resource res)
         {
-            ThunderOfflineDownloadTask task = new ThunderOfflineDownloadTask() { Status = 0, ResourceId = res.Id, EntryId = entry.Id };
+            ThunderOfflineDownloadTask task = new ThunderOfflineDownloadTask() { Status = 0, ResourceId = res.Id, EntryId = entry.Id, FailCount = 0 };
             _provider.Collection.Insert(task);
             return task;
         }
@@ -54,6 +54,8 @@ namespace Tracy
                     catch (Exception ex)
                     {
                         Console.WriteLine("[ERROR] " + ex.Message);
+                        task.FailCount = task.FailCount + 1;
+                        _provider.Collection.Save(task);
                     }
                     System.Threading.Thread.Sleep(1000);
                 }

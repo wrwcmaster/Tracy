@@ -8,14 +8,25 @@ using System.Threading.Tasks;
 
 namespace Tracy.DataModel
 {
-    public class Resource
+    [DataContract]
+    public class Resource : BaseMongoModel
     {
-        public ObjectId Id { get; set; }
+        [DataMember(Name = "title")]
         public string Title { get; set; }
+
+        [DataMember(Name = "link")]
         public string Link { get; set; }
+
+        [DataMember(Name = "publish-date")]
         public DateTime PublishDate { get; set; }
+
+        [DataMember(Name = "source")]
         public string Source { get; set; }
+
+        [DataMember(Name = "type")]
         public string Type { get; set; }
+
+        [DataMember(Name = "status")]
         public int Status { get; set; }
     }
 }

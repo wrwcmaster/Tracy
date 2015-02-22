@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataAccess\ThunderOfflineDownloadTaskProvider.cs" />
+    <Compile Include="DataModel\BaseMongoModel.cs" />
     <Compile Include="DataModel\ThunderOfflineDownloadTask.cs" />
     <Compile Include="ThunderOfflineDownloadManager.cs" />
     <Compile Include="DataAccess\BaiduOfflineDownloadTaskProvider.cs" />
