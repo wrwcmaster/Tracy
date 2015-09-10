@@ -17,7 +17,7 @@ namespace Tracy.DataModel
         [DataMember(Name = "link")]
         public string Link { get; set; }
 
-        [DataMember(Name = "publish-date")]
+        [DataMember(Name = "publishDate")]
         public DateTime PublishDate { get; set; }
 
         [DataMember(Name = "source")]

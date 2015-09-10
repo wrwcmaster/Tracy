@@ -1,8 +1,34 @@
 extends layout
 
+block header
+    a(href= '#entryAddDialog', data-rel= 'popup', data-position-to= 'window', data-icon= 'plus', class= 'ui-btn-right') Add
+    
 block content
     ul(data-role= 'listview')
         each entry in entries
             li
                 a(href= 'resources/' + entry.id + '/' + entry.name)
                     h2= entry.name
+    
+    div(data-role= 'popup', id= 'entryAddDialog' class= 'ui-content')
+        form(id= 'entryAddForm', action='/entries/add', method= 'post')
+            h3 Please Input Entry Information
+            input(type= 'text' name= 'name' id= 'entryName' value= '' placeholder= 'Entry Name')
+            input(type= 'text' name= 'searchKeywords' id= 'entrySearchKeywords' value= '' placeholder= 'Search Keywords')
+            input(type= 'text' name= 'regExpr' id= 'entryRegExpr' value= '' placeholder= 'Regular Expression')
+            button(type= 'submit') Submit
+            
+block clientScript
+    script.
+        var entryAddForm = $('#entryAddForm');
+        entryAddForm.submit(function (event) {
+           $.ajax({
+              type: entryAddForm.attr('method'),
+              url: entryAddForm.attr('action'),
+              data: entryAddForm.serialize(),
+              success: function (data) {
+                  $('#entryAddDialog').popup('close');
+              }
+           });
+           event.preventDefault();
+        });

@@ -2,16 +2,17 @@ doctype html
 html
     head
         title= title
-        link(rel='stylesheet', href='/stylesheets/style.css')
-        link(rel='stylesheet', href='/stylesheets/jquery.mobile-1.4.5.min.css')
-        link(rel='stylesheet', href='/stylesheets/jquery.mobile.theme-1.4.5.min.css')
-        link(rel='stylesheet', href='/stylesheets/jquery.mobile.structure-1.4.5.min.css')
-        link(rel='stylesheet', href='/stylesheets/jquery.mobile.inline-svg-1.4.5.min.css')
-        link(rel='stylesheet', href='/stylesheets/jquery.mobile.inline-png-1.4.5.min.css')
-        link(rel='stylesheet', href='/stylesheets/jquery.mobile.icons-1.4.5.min.css')
-        link(rel='stylesheet', href='/stylesheets/jquery.mobile.external-png-1.4.5.min.css')
-        script(src='/javascripts/jquery-1.11.2.min.js')
-        script(src='/javascripts/jquery.mobile-1.4.5.min.js')
+        meta(name= 'viewport', content= 'width=device-width, initial-scale=1')
+        link(rel= 'stylesheet', href= '/stylesheets/style.css')
+        link(rel= 'stylesheet', href= '/stylesheets/jquery.mobile-1.4.5.min.css')
+        link(rel= 'stylesheet', href= '/stylesheets/jquery.mobile.theme-1.4.5.min.css')
+        link(rel= 'stylesheet', href= '/stylesheets/jquery.mobile.structure-1.4.5.min.css')
+        link(rel= 'stylesheet', href= '/stylesheets/jquery.mobile.inline-svg-1.4.5.min.css')
+        link(rel= 'stylesheet', href= '/stylesheets/jquery.mobile.inline-png-1.4.5.min.css')
+        link(rel= 'stylesheet', href= '/stylesheets/jquery.mobile.icons-1.4.5.min.css')
+        link(rel= 'stylesheet', href= '/stylesheets/jquery.mobile.external-png-1.4.5.min.css')
+        script(src= '/javascripts/jquery-1.11.2.min.js')
+        script(src= '/javascripts/jquery.mobile-1.4.5.min.js')
     body
         - function formatDate(value) {
         -        var pattern = /Date\(([^)]+)\)/;
@@ -19,9 +20,14 @@ html
         -        var dt = new Date(parseFloat(results[1]));
         -        return dt.toLocaleString();
         -    }
-        div(data-role='page')
-            div(data-role='header')
+        block serverScript
+        
+        div(data-role= 'page')
+            div(data-role= 'header')
                 h1= title
-            div.ui-content(role='main')
+                block header
+            div.ui-content(role= 'main')
                 block content
-            div(data-role='footer')
+            div(data-role= 'footer')
+        
+        block clientScript

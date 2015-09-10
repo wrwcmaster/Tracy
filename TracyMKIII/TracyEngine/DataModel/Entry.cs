@@ -15,13 +15,13 @@ namespace Tracy.DataModel
         [DataMember(Name = "name")]
         public string Name { get; set; }
 
-        [DataMember(Name = "search-keywords")]
+        [DataMember(Name = "searchKeywords")]
         public string SearchKeywords { get; set; }
 
-        [DataMember(Name = "reg-expr")]
+        [DataMember(Name = "regExpr")]
         public string RegExpr { get; set; }
 
-        [DataMember(Name = "tracing-enabled")]
+        [DataMember(Name = "tracingEnabled")]
         public bool TracingEnabled { get; set; }
 
         public List<ObjectId> ResourceIds { get; set; }

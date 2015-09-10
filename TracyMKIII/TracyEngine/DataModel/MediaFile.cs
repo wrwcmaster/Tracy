@@ -11,7 +11,7 @@ namespace Tracy.DataModel
     [DataContract]
     public class MediaFile : BaseMongoModel
     {
-        [DataMember(Name = "file-name")]
+        [DataMember(Name = "fileName")]
         public string FileName { get; set; }
 
         [DataMember(Name = "size")]
@@ -23,10 +23,10 @@ namespace Tracy.DataModel
         [DataMember(Name = "type")]
         public string Type { get; set; }
 
-        [DataMember(Name = "create-date")]
+        [DataMember(Name = "createDate")]
         public DateTime CreateDate { get; set; }
 
-        [DataMember(Name = "complete-date")]
+        [DataMember(Name = "completeDate")]
         public DateTime CompleteDate { get; set; }
 
         [DataMember(Name = "status")]

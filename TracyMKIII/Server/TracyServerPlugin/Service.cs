@@ -43,6 +43,15 @@ namespace TracyServerPlugin
         }
 
         [OperationContract]
+        [WebInvoke]
+        public Entry AddEntry(Entry newEntry)
+        {
+            WebOperationContext.Current.OutgoingResponse.Format = WebMessageFormat.Json;
+            TracyFacade.Instance.Manager.EntryProvider.Collection.Insert(newEntry);
+            return newEntry;
+        }
+
+        [OperationContract]
         [WebGet]
         public List<Entry> GetEntryList()
         {
