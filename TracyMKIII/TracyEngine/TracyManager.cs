@@ -60,7 +60,12 @@ namespace Tracy
 
         public void SyncResource()
         {
-            _dmhySource.Sync();
+            _dmhySource.Sync(1, true);
+        }
+
+        public void SyncResource(int startPage)
+        {
+            _dmhySource.Sync(startPage, false);
         }
 
         private void DmhySource_OnResourcesFound(object sender, GenericEventArgs<List<Resource>> e)

@@ -25,10 +25,10 @@ namespace Tracy.ResourceSource.Dmhy
             Provider = provider;
         }
 
-        public void Sync()
+        public void Sync(int startPage, bool incrementalMode)
         {
-            DateTime lastPublishDate = Provider.GetLatestPublishTime(Name);
-            int i = 1;
+            DateTime lastPublishDate = incrementalMode ? Provider.GetLatestPublishTime(Name) : DateTime.MinValue;
+            int i = startPage;
             while (true)
             {
                 Console.WriteLine("Syncing page " + i);

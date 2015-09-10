@@ -17,7 +17,7 @@ namespace Tracy.DataAccess
         }
 
         private string _dbName = "tracy";
-        private string _connectionString = "mongodb://localhost:27001";
+        private string _connectionString = "mongodb://localhost:27017";
         private MongoClient _client;
         private MongoServer _server;
 

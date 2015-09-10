@@ -54,7 +54,7 @@
     <Compile Include="Service.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\CommonLib\Plugin\PluginCore\PluginCore.csproj">
+    <ProjectReference Include="..\..\..\..\Gaia.Common\Plugin\PluginCore\PluginCore.csproj">
       <Project>{d6a58963-f72d-4e17-bc0b-241cc2923fb4}</Project>
       <Name>PluginCore</Name>
     </ProjectReference>

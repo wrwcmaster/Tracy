@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{DDEBC11A-F741-435C-8FFB-CBDD1AE61036}"
 EndProject
@@ -13,13 +13,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TracyEngine", "TracyEngine\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{30C15B20-4A6E-405E-8877-97D7A429E91C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonLib", "..\..\CommonLib\CommonLib\CommonLib.csproj", "{C586E3C8-1870-4054-833E-CF4322C31E44}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonLib", "..\..\Gaia.Common\CommonLib\CommonLib.csproj", "{C586E3C8-1870-4054-833E-CF4322C31E44}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PluginCore", "..\..\CommonLib\Plugin\PluginCore\PluginCore.csproj", "{D6A58963-F72D-4E17-BC0B-241CC2923FB4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PluginCore", "..\..\Gaia.Common\Plugin\PluginCore\PluginCore.csproj", "{D6A58963-F72D-4E17-BC0B-241CC2923FB4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaiduPanAPI", "..\..\BaiduPanAPI\BaiduPanAPI\BaiduPanAPI.csproj", "{81320D4E-94D6-40B9-9C51-41659706839D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThunderAPI", "..\..\ThunderOfflineDownloadAPI\ThunderAPI\ThunderAPI.csproj", "{90E6CA08-1384-4EED-B8D5-A51ABE1C3EC0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PluginLoader", "PluginLoader", "{1530C0EC-3851-4E93-A7A1-211A3393613E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsolePluginLoader", "..\..\Gaia.Common\Plugin\ConsolePluginLoader\ConsolePluginLoader.csproj", "{1AA07FAD-83B1-4419-A12D-4A7922093FB4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PluginContainer", "..\..\Gaia.Common\Plugin\PluginContainer\PluginContainer.csproj", "{22E09AA2-B9F4-48AB-86C3-342BDC735C78}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +57,14 @@ Global
 		{90E6CA08-1384-4EED-B8D5-A51ABE1C3EC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{90E6CA08-1384-4EED-B8D5-A51ABE1C3EC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{90E6CA08-1384-4EED-B8D5-A51ABE1C3EC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1AA07FAD-83B1-4419-A12D-4A7922093FB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AA07FAD-83B1-4419-A12D-4A7922093FB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AA07FAD-83B1-4419-A12D-4A7922093FB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AA07FAD-83B1-4419-A12D-4A7922093FB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22E09AA2-B9F4-48AB-86C3-342BDC735C78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22E09AA2-B9F4-48AB-86C3-342BDC735C78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22E09AA2-B9F4-48AB-86C3-342BDC735C78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22E09AA2-B9F4-48AB-86C3-342BDC735C78}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -62,5 +76,7 @@ Global
 		{D6A58963-F72D-4E17-BC0B-241CC2923FB4} = {30C15B20-4A6E-405E-8877-97D7A429E91C}
 		{81320D4E-94D6-40B9-9C51-41659706839D} = {30C15B20-4A6E-405E-8877-97D7A429E91C}
 		{90E6CA08-1384-4EED-B8D5-A51ABE1C3EC0} = {30C15B20-4A6E-405E-8877-97D7A429E91C}
+		{1AA07FAD-83B1-4419-A12D-4A7922093FB4} = {1530C0EC-3851-4E93-A7A1-211A3393613E}
+		{22E09AA2-B9F4-48AB-86C3-342BDC735C78} = {1530C0EC-3851-4E93-A7A1-211A3393613E}
 	EndGlobalSection
 EndGlobal

@@ -16,28 +16,35 @@ namespace TracyServerPlugin
     {
         [OperationContract]
         [WebGet]
-        void Sync()
+        public void Sync(string startPage)
         {
-            TracyFacade.Instance.Manager.SyncResource();
+            if (String.IsNullOrEmpty(startPage))
+            {
+                TracyFacade.Instance.Manager.SyncResource();
+            }
+            else
+            {
+                TracyFacade.Instance.Manager.SyncResource(int.Parse(startPage));
+            }
         }
 
         [OperationContract]
         [WebGet]
-        void CheckTasks()
+        public void CheckTasks()
         {
             TracyFacade.Instance.Manager.CheckTasks();
         }
 
         [OperationContract]
         [WebGet]
-        void Test()
+        public void Test()
         {
             TracyFacade.Instance.Manager.Test();
         }
 
         [OperationContract]
         [WebGet]
-        List<Entry> GetEntryList()
+        public List<Entry> GetEntryList()
         {
             WebOperationContext.Current.OutgoingResponse.Format = WebMessageFormat.Json;
             return TracyFacade.Instance.Manager.EntryProvider.Collection.FindAll().ToList();
@@ -45,7 +52,7 @@ namespace TracyServerPlugin
 
         [OperationContract]
         [WebGet]
-        List<Resource> GetResourceList(string entryId)
+        public List<Resource> GetResourceList(string entryId)
         {
             List<Resource> rtn = new List<Resource>();
             WebOperationContext.Current.OutgoingResponse.Format = WebMessageFormat.Json;
