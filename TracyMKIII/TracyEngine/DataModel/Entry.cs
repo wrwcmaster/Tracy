@@ -1,4 +1,5 @@
 ﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,10 +25,37 @@ namespace Tracy.DataModel
         [DataMember(Name = "tracingEnabled")]
         public bool TracingEnabled { get; set; }
 
-        public List<ObjectId> ResourceIds { get; set; }
-        
-        public List<ObjectId> MediaFileIds { get; set; }
-        
+        [BsonElement("ResourceIds")]
+        private List<ObjectId> _resourceIds;
+
+        [BsonIgnore]
+        public List<ObjectId> ResourceIds {
+            get
+            {
+                if (_resourceIds == null)
+                {
+                    _resourceIds = new List<ObjectId>();
+                }
+                return _resourceIds;
+            }
+        }
+
+        [BsonElement("MediaFileIds")]
+        private List<ObjectId> _mediaFileIds;
+
+        [BsonIgnore]
+        public List<ObjectId> MediaFileIds
+        {
+            get
+            {
+                if (_mediaFileIds == null)
+                {
+                    _mediaFileIds = new List<ObjectId>();
+                }
+                return _mediaFileIds;
+            }
+        }
+
         public bool IsTitleMatched(string title)
         {
             Regex regEx = new Regex(RegExpr.ToUpper());

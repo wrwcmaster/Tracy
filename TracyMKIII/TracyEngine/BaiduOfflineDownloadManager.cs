@@ -70,7 +70,7 @@ namespace Tracy
                     var file = fileList[i];
                     MediaFile mediaFile = new MediaFile() { FileName = file.FileName, Size = Convert.ToInt64(file.Size), CreateDate = DateTime.Now, Type = "BaiduPan", Status = 0 };
                     TracyFacade.Instance.Manager.MediaFileProvider.Collection.Insert(mediaFile);
-                    if (entry.MediaFileIds == null) entry.MediaFileIds = new List<ObjectId>();
+                    
                     entry.MediaFileIds.Add(mediaFile.Id);
                     if (task.FileIds == null) task.FileIds = new List<ObjectId>();
                     task.FileIds.Add(mediaFile.Id);

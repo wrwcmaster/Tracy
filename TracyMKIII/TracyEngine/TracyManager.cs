@@ -85,7 +85,7 @@ namespace Tracy
                     {
                         Console.WriteLine("Resource " + res.Title + " matched entry " + entry.Name);
                         matchedEntry = entry;
-                        if (entry.ResourceIds == null) entry.ResourceIds = new List<ObjectId>();
+
                         if (!entry.ResourceIds.Contains(res.Id))
                         {
                             entry.ResourceIds.Add(res.Id);

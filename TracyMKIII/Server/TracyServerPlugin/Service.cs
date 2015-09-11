@@ -30,7 +30,7 @@ namespace TracyServerPlugin
         }
 
         [OperationContract]
-        [WebGet]
+        [WebGet(ResponseFormat = WebMessageFormat.Json)]
         public ServiceResponse CheckTasks()
         {
             TracyFacade.Instance.Manager.CheckTasks();
@@ -38,7 +38,7 @@ namespace TracyServerPlugin
         }
 
         [OperationContract]
-        [WebGet]
+        [WebGet(ResponseFormat = WebMessageFormat.Json)]
         public ServiceResponse Test()
         {
             TracyFacade.Instance.Manager.Test();
@@ -46,29 +46,26 @@ namespace TracyServerPlugin
         }
 
         [OperationContract]
-        [WebInvoke]
+        [WebInvoke(ResponseFormat = WebMessageFormat.Json)]
         public GenericServiceResponse<Entry> AddEntry(Entry newEntry)
         {
-            WebOperationContext.Current.OutgoingResponse.Format = WebMessageFormat.Json;
             TracyFacade.Instance.Manager.EntryProvider.Collection.Insert(newEntry);
             return new GenericServiceResponse<Entry>(newEntry);
         }
 
         [OperationContract]
-        [WebGet]
+        [WebGet(ResponseFormat = WebMessageFormat.Json)]
         public GenericServiceResponse<List<Entry>> GetEntryList()
         {
-            WebOperationContext.Current.OutgoingResponse.Format = WebMessageFormat.Json;
             var rtn = TracyFacade.Instance.Manager.EntryProvider.Collection.FindAll().ToList();
             return new GenericServiceResponse<List<Entry>>(rtn);
         }
 
         [OperationContract]
-        [WebGet]
+        [WebGet(ResponseFormat = WebMessageFormat.Json)]
         public GenericServiceResponse<List<Resource>> GetResourceList(string entryId)
         {
             List<Resource> rtn = new List<Resource>();
-            WebOperationContext.Current.OutgoingResponse.Format = WebMessageFormat.Json;
             Entry entry = TracyFacade.Instance.Manager.EntryProvider.Collection.FindOneById(new ObjectId(entryId));
             foreach (ObjectId resId in entry.ResourceIds)
             {
