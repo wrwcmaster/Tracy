@@ -20,8 +20,8 @@ In order to launch Tracy on your server, you need to prepare the following thing
 ## Build & Launch
 Use Visual Studio or Mono to build TracyServerPlugin.csproj
 
-Execute _ConsolePluginLoader.exe TracyServerPlugin.dll_ to launch Tracy Service. (http://localhost:8801)
+Execute `ConsolePluginLoader.exe TracyServerPlugin.dll` to launch Tracy Service. (http://localhost:8801)
 
 Note: You may need to build ConsolePluginLoader.csproj first to get the .exe file.
 
-Execute _node WebUI/bin/www_ to start Web UI. (http://localhost:3000)
+Execute `node WebUI/bin/www` to start Web UI. (http://localhost:3000)
