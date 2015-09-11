@@ -8,8 +8,8 @@ var request = require('request');
 router.get('/', function(req, res, next) {
     request('http://localhost:8801/GetEntryList', function (error, response, body) {
         if (!error && response.statusCode == 200) {
-            var entries = JSON.parse(body);
-            res.render('entries', { title: 'My Entries', entries: entries });
+            var data = JSON.parse(body);
+            res.render('entries', { title: 'My Entries', entries: data.result });
         }
     });
 });
