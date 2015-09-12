@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Tracy.DataAccess;
 using Tracy.DataModel;
@@ -56,6 +57,25 @@ namespace Tracy
                 _downloadManager = new ThunderOfflineDownloadManager(_database, userName, password);
             }
             
+        }
+
+        public void AddEntry(Entry newEntry)
+        {
+            BindResources(newEntry, false);
+            EntryProvider.Collection.Insert(newEntry);
+        }
+
+        private void BindResources(Entry entry, bool willCheckDuplication)
+        {
+            var resourceList = TracyFacade.Instance.Manager.ResourceProvider.FindResource(entry.SearchKeywords);
+            var result = TracyFacade.Instance.Manager.ResourceProvider.FilterResource(resourceList, entry.RegExpr);
+            foreach (var res in result)
+            {
+                if (willCheckDuplication || !entry.ResourceIds.Contains(res.Id))
+                {
+                    entry.ResourceIds.Add(res.Id);
+                }
+            }
         }
 
         public void SyncResource()
@@ -116,17 +136,5 @@ namespace Tracy
             _downloadManager.CheckOnGoingTasks();
         }
 
-        public void Test()
-        {
-            var entry = _entryProvider.Collection.FindOne();
-            List<Resource> resources = _resourceProvider.FindResource(entry.SearchKeywords);
-            foreach (var res in resources)
-            {
-                if (!entry.ResourceIds.Contains(res.Id))
-                {
-                    entry.ResourceIds.Add(res.Id);
-                }
-            }
-        }
     }
 }

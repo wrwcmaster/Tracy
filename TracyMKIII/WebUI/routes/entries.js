@@ -14,9 +14,11 @@ router.get('/', function(req, res, next) {
     });
 });
 
+/* API */
 router.post('/add', function(req, res, next) {
     console.log('entries/add');
     console.log(req.body);
+    res.set('Content-Type', 'application/json');
     
     request({
         method: 'POST',
@@ -26,7 +28,7 @@ router.post('/add', function(req, res, next) {
         var rtn = {};
         rtn.errorCode = 0;
         rtn.entry = body;
-        res.send(JSON.stringify(rtn));
+        res.send(rtn);
     });
 });
 

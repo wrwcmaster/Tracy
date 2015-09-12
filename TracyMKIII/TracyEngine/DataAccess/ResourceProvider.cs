@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Tracy.DataModel;
 
@@ -25,13 +26,23 @@ namespace Tracy.DataAccess
             }
         }
 
-        public List<Resource> FindResource(string keywords)
+        public IEnumerable<Resource> FindResource(string keywords)
         {
             if (String.IsNullOrEmpty(keywords))
             {
                 return Collection.FindAll().ToList();
             }
-            return Collection.Find(GenerateQueryFromKeywordList(keywords.Split(' '))).ToList();
+            return Collection.Find(GenerateQueryFromKeywordList(keywords.Split(' ')));
+        }
+
+        public IEnumerable<Resource> FilterResource(IEnumerable<Resource> resourceList, string regExpr)
+        {
+            if (String.IsNullOrEmpty(regExpr))
+            {
+                return resourceList;
+            }
+            var regExprObj = new Regex(regExpr);
+            return resourceList.Where((res) => regExprObj.IsMatch(res.Title));
         }
 
         private IMongoQuery GenerateQueryFromKeywordList(IEnumerable<string> keywordList)
