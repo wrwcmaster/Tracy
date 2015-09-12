@@ -74,5 +74,13 @@ namespace TracyServerPlugin
             }
             return new GenericServiceResponse<List<Resource>>(rtn);
         }
+
+        [OperationContract]
+        [WebGet(ResponseFormat = WebMessageFormat.Json)]
+        public GenericServiceResponse<List<Resource>> SearchResource(string keywords)
+        {
+            var rtn = TracyFacade.Instance.Manager.ResourceProvider.FindResource(keywords);
+            return new GenericServiceResponse<List<Resource>>(rtn);
+        }
     }
 }

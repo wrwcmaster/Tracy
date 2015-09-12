@@ -25,9 +25,20 @@ namespace Tracy.DataAccess
             }
         }
 
-        public List<Resource> FindResource(string keyword)
+        public List<Resource> FindResource(string keywords)
         {
-            return Collection.Find(Query<Resource>.Matches(r => r.Title, "/" + keyword + "/")).ToList();
+            if (String.IsNullOrEmpty(keywords))
+            {
+                return Collection.FindAll().ToList();
+            }
+            return Collection.Find(GenerateQueryFromKeywordList(keywords.Split(' '))).ToList();
+        }
+
+        private IMongoQuery GenerateQueryFromKeywordList(IEnumerable<string> keywordList)
+        {
+            var builder = new QueryBuilder<Resource>();
+            var queries = keywordList.Select((keyword) => Query<Resource>.Matches(r => r.Title, "/" + keyword + "/"));
+            return builder.And(queries);
         }
 
         public DateTime GetLatestPublishTime(string source)
