@@ -7,7 +7,7 @@ block content
     ul(data-role= 'listview')
         each entry in entries
             li
-                a(href= 'resources/' + entry.id + '/' + entry.name)
+                a(href= 'resources/list/' + entry.id + '/' + entry.name)
                     h2= entry.name
     
     div(data-role= 'popup', id= 'entryAddDialog' class= 'ui-content')

@@ -5,13 +5,20 @@ var debug = require('debug')('tracy');
 var request = require('request');
 
 /* GET resources page. */
-router.get('/:entryId/:entryName', function(req, res, next) {
-    request('http://localhost:8801/GetResourceList?entryId=' + req.params.entryId, function (error, response, body) {
+router.get('/list/:entryId/:entryName', function(req, res, next) {
+    
+    request('http://localhost:8801/GetMediaFileList?entryId=' + req.params.entryId, function (error, response, body) {
         if (!error && response.statusCode == 200) {
-            var data = JSON.parse(body);
-            res.render('resources', { title: req.params.entryName, resources: data.result });
+            var fileData = JSON.parse(body);
+            request('http://localhost:8801/GetResourceList?entryId=' + req.params.entryId, function (error, response, body) {
+                if (!error && response.statusCode == 200) {
+                    var resData = JSON.parse(body);
+                    res.render('resources', { entryId: req.params.entryId, title: req.params.entryName, resources: resData.result, mediaFiles: fileData.result });
+                }
+            });
         }
     });
+    
 });
 
 /* API */
@@ -41,6 +48,35 @@ router.post('/validateEntry', function(req, res, next) {
     } else {
         res.send(rtn);
     }
+});
+
+router.post('/offlineDownload', function(req, res, next) {
+    console.log('resources/offlineDownload');
+    console.log(req.body);
+    res.set('Content-Type', 'application/json');
+    var param = req.body;
+    var rtn = {};
+    rtn.errorCode = 0;
+    
+    if (rtn.errorCode == 0) {
+        request({
+            method: 'POST',
+            url: 'http://localhost:8801/DownloadResource?entryId=' + param.entryId + '&resourceId=' + param.resourceId 
+        }, function (error, response, body) {
+            res.send(body);
+        });
+    } else {
+        res.send(rtn);
+    }
+});
+
+router.get('/download/:mediaFileId', function(req, res, next) {
+    request('http://localhost:8801/GetDownloadUrl?mediaFileId=' + req.params.mediaFileId, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            var url = body;
+            res.redirect(url);
+        }
+    });
 });
 
 module.exports = router;

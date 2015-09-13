@@ -21,7 +21,7 @@ namespace Tracy.DataAccess
         {
             get
             {
-                return _db.GetCollection<ThunderOfflineDownloadTask>("thunder_offline_download_task");
+                return _db.GetCollection<ThunderOfflineDownloadTask>("thunderOfflineDownloadTask");
             }
         }
     }

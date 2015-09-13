@@ -21,7 +21,7 @@ namespace Tracy.DataAccess
         {
             get
             {
-                return _db.GetCollection<MediaFile>("media_file");
+                return _db.GetCollection<MediaFile>("mediaFile");
             }
         }
     }

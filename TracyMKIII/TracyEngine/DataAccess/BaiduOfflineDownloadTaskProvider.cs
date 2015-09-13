@@ -21,7 +21,7 @@ namespace Tracy.DataAccess
         {
             get
             {
-                return _db.GetCollection<BaiduOfflineDownloadTask>("baidu_offline_download_task");
+                return _db.GetCollection<BaiduOfflineDownloadTask>("baiduOfflineDownloadTask");
             }
         }
     }

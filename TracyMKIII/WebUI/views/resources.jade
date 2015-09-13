@@ -2,9 +2,25 @@ extends layout
 
 block content
     ul(data-role= 'listview')
-        each resource in resources
+        li(data-role= 'list-divider') Offline Downloaded Files
+        each mediaFile in mediaFiles
             li(data-icon= 'arrow-d')
-                a(href= '#')
-                    h2= resource['title']
-                    p= formatDate(resource['publishDate'])
-                    a.ui-btn.ui-btn-inline(href= resource['link'])= resource['type']
+                a(href= '/resources/download/' + mediaFile['id'])
+                    h2= mediaFile['fileName']
+        li(data-role= 'list-divider') Magnet Resources
+        each resource in resources
+            li
+                h2= resource['title']
+                p= formatDate(resource['publishDate'])
+                div(data-role= 'controlgroup' data-type= 'horizontal')
+                    a.ui-btn(href= resource['link'])= resource['type']
+                    a.ui-btn(href= 'javascript:offlineDownload("' + entryId + '", "' + resource['id']  + '")') Offline Download
+
+block clientScript
+    script.
+        function offlineDownload(entryId, resId) {
+            $.post('/resources/offlineDownload', { entryId: entryId, resourceId: resId })
+            .done(function (data) {
+                alert("Offline Download Task: " + data.result.id);
+            });
+        }

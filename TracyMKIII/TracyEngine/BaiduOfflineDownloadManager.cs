@@ -105,7 +105,7 @@ namespace Tracy
                             {
                                 long serverFileId = result.FileId;
                                 var shareResponse = _agent.Share(serverFileId);
-                                file.Url = shareResponse.Link;
+                                file.PrivateUrl = shareResponse.Link;
                                 file.Status = 1;
                                 TracyFacade.Instance.Manager.MediaFileProvider.Collection.Save(file);
                             }

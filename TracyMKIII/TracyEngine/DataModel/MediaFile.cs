@@ -17,8 +17,15 @@ namespace Tracy.DataModel
         [DataMember(Name = "size")]
         public long Size { get; set; }
 
-        [DataMember(Name = "url")]
-        public string Url { get; set; }
+        //TODO: move to resource
+        [DataMember(Name = "privateUrl")]
+        public string PrivateUrl { get; set; }
+
+        [DataMember(Name = "sharedUrl")]
+        public string SharedUrl { get; set; }
+
+        [DataMember(Name = "lastSharedDate")]
+        public DateTime LastSharedDate { get; set; }
 
         [DataMember(Name = "type")]
         public string Type { get; set; }

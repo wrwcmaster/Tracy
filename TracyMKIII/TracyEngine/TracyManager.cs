@@ -122,19 +122,30 @@ namespace Tracy
             }
         }
 
-        public void DownloadResource(Entry entry, Resource res)
+        public ThunderOfflineDownloadTask DownloadResource(Entry entry, Resource res)
         {
             Console.WriteLine("Create download task for resource " + res.Title);
             var task = _downloadManager.CreateTask(entry, res);
             res.Status = 1;
             _resourceProvider.Collection.Save(res);
-            //_downloadManager.CheckOnGoingTasks();
+            _downloadManager.CheckOnGoingTasks();
+            return task;
         }
 
-        public void CheckTasks()
+        public void CheckDownloadTasks()
         {
             _downloadManager.CheckOnGoingTasks();
         }
 
+        public string GetSharedUrl(MediaFile file)
+        {
+            if(String.IsNullOrEmpty(file.SharedUrl) || (DateTime.UtcNow - file.LastSharedDate).Days > 10)
+            {
+                file.SharedUrl = _downloadManager.GetSharedUrl(file.PrivateUrl, file.FileName);
+                file.LastSharedDate = DateTime.UtcNow;
+                MediaFileProvider.Collection.Save(file);
+            }
+            return file.SharedUrl;
+        }
     }
 }

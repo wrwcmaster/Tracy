@@ -45,6 +45,7 @@ namespace Tracy
                         if (task.Status == 0)
                         {
                             StartTask(task);
+                            CheckTask(task);
                         }
                         else if (task.Status == 1)
                         {
@@ -93,6 +94,7 @@ namespace Tracy
 
         private void CheckTask(ThunderOfflineDownloadTask task)
         {
+            Entry entry = TracyFacade.Instance.Manager.EntryProvider.Collection.FindOneById(task.EntryId);
             Resource res = TracyFacade.Instance.Manager.ResourceProvider.Collection.FindOneById(task.ResourceId);
             Console.WriteLine("Checking progress for task " + res.Title);
             var detail = _agent.QueryBTDetail(task.Cid, task.TaskId, 1);
@@ -118,8 +120,7 @@ namespace Tracy
                     {
                         if (localFile.Status == 0 && completed)
                         {
-                            localFile.CompleteDate = DateTime.UtcNow;
-                            localFile.Status = 1;
+                            MarkMediaFileAsCompleted(localFile, remoteFile.DownloadUrl);
                             TracyFacade.Instance.Manager.MediaFileProvider.Collection.Save(localFile);
                         }
                         exists = true;
@@ -128,8 +129,24 @@ namespace Tracy
                 }
                 if (!exists)
                 {
-                    MediaFile mediaFile = new MediaFile() { FileName = remoteFile.FileName, Size = Convert.ToInt64(remoteFile.Size), CreateDate = DateTime.UtcNow, Type = "Thunder", Status = completed ? 1 : 0 };
+                    MediaFile mediaFile = new MediaFile() {
+                        FileName = remoteFile.FileName,
+                        Size = Convert.ToInt64(remoteFile.Size),
+                        CreateDate = DateTime.UtcNow,
+                        LastSharedDate= DateTime.MinValue,
+                        Type = "Thunder",
+                        Status = 0
+                    };
+
+                    if (completed)
+                    {
+                        MarkMediaFileAsCompleted(mediaFile, remoteFile.DownloadUrl);
+                    }
+
                     TracyFacade.Instance.Manager.MediaFileProvider.Collection.Insert(mediaFile);
+                    //Link to entry
+                    entry.MediaFileIds.Add(mediaFile.Id);
+                    TracyFacade.Instance.Manager.EntryProvider.Collection.Save(entry);
                 }
             }
 
@@ -139,6 +156,22 @@ namespace Tracy
                 task.Status = 2;
                 _provider.Collection.Save(task);
             }
+        }
+
+        private void MarkMediaFileAsCompleted(MediaFile file, string privateUrl)
+        {
+            file.CompleteDate = DateTime.UtcNow;
+            file.PrivateUrl = privateUrl; //thunderUrl
+            file.Status = 1;
+        }
+
+        public string GetSharedUrl(string thunderUrl, string fileName)
+        {
+            var analysisResult = _agent.KuaiAnalyzeUrl(thunderUrl);
+            var forwardResponse = _agent.KuaiForwardOfflineDownloadTask(analysisResult.Result.Cid, analysisResult.Result.FileSize, analysisResult.Result.Gcid, fileName, analysisResult.Result.Url, analysisResult.Result.Section);
+            var shortUrlResponse = _agent.KuaiGetShortUrl(forwardResponse.ForwardTaskId);
+            var url = _agent.KuaiGetActualUrl(shortUrlResponse.Url);
+            return url;
         }
     }
 }
