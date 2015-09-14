@@ -17,6 +17,9 @@ namespace Tracy
 {
     public class ThunderOfflineDownloadManager
     {
+        //Only for test
+        private BaiduPanAgent _baiduAgent;
+
         private ThunderAgent _agent;
         private ThunderOfflineDownloadTaskProvider _provider;
         public ThunderOfflineDownloadManager(TracyDB db, string userName, string password)
@@ -24,6 +27,9 @@ namespace Tracy
             _provider = new ThunderOfflineDownloadTaskProvider(db);
             _agent = new ThunderAgent();
             _agent.Login(userName, password);
+
+            //Only for test
+            _baiduAgent = new BaiduPanAgent("nA2MXZmZEwzZWV0LVBvSy1NMkIzR35wclR3dDJ5UEZWRzFRNm1UbGRadFJkUjVXQVFBQUFBJCQAAAAAAAAAAAEAAABIEo1NU2NvdHRUZXN0MDgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFHo9lVR6PZVT");
         }
 
         public ThunderOfflineDownloadTask CreateTask(Entry entry, Resource res)
@@ -172,6 +178,34 @@ namespace Tracy
             var shortUrlResponse = _agent.KuaiGetShortUrl(forwardResponse.ForwardTaskId);
             var url = _agent.KuaiGetActualUrl(shortUrlResponse.Url);
             return url;
+        }
+
+        //Only for test, move to stand alone plugin in the future
+        public string TransportToBaiduPan(string privateUrl, string fileName)
+        {
+            var tmpFileName = Path.GetTempFileName();
+            try
+            {
+                long fileSize = 0;
+                using(var outputFileStream = new FileStream(tmpFileName, FileMode.Create))
+                {
+                    _agent.PrivateDownload(privateUrl, outputFileStream);
+                    fileSize = outputFileStream.Length;
+                }
+                using(var inputFileStream = new FileStream(tmpFileName, FileMode.Open))
+                {
+                    var pcsResponse = _baiduAgent.UploadTempFile(fileName, inputFileStream);
+                    var createResponse = _baiduAgent.CreateCloudFile("/" + fileName, fileSize, pcsResponse.MD5);
+                    return createResponse.Path;
+                }
+            }
+            finally
+            {
+                File.Delete(tmpFileName);
+            }
+            
+
+            
         }
     }
 }

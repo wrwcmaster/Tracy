@@ -34,6 +34,11 @@ namespace Tracy
             get { return _mediaFileProvider; }
         }
         private ThunderOfflineDownloadManager _downloadManager;
+        public ThunderOfflineDownloadManager DownloadManager
+        {
+            get { return _downloadManager; }
+        }
+
         private DmhyResourceSource _dmhySource;
         public TracyManager()
         {
