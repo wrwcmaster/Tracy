@@ -73,8 +73,8 @@ router.post('/offlineDownload', function(req, res, next) {
 router.get('/download/:mediaFileId', function(req, res, next) {
     request('http://localhost:8801/GetDownloadUrl?mediaFileId=' + req.params.mediaFileId, function (error, response, body) {
         if (!error && response.statusCode == 200) {
-            var url = body;
-            res.redirect(url);
+            var url = JSON.parse(body);
+            res.redirect(url.result);
         }
     });
 });

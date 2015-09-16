@@ -176,8 +176,8 @@ namespace Tracy
             var analysisResult = _agent.KuaiAnalyzeUrl(thunderUrl);
             var forwardResponse = _agent.KuaiForwardOfflineDownloadTask(analysisResult.Result.Cid, analysisResult.Result.FileSize, analysisResult.Result.Gcid, fileName, analysisResult.Result.Url, analysisResult.Result.Section);
             var shortUrlResponse = _agent.KuaiGetShortUrl(forwardResponse.ForwardTaskId);
-            var url = _agent.KuaiGetActualUrl(shortUrlResponse.Url);
-            return url;
+            //var url = _agent.KuaiGetActualUrl(shortUrlResponse.Url); //This url needs cookie, it is not public to all
+            return shortUrlResponse.Url;
         }
 
         //Only for test, move to stand alone plugin in the future

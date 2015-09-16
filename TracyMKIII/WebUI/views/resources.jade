@@ -5,7 +5,7 @@ block content
         li(data-role= 'list-divider') Offline Downloaded Files
         each mediaFile in mediaFiles
             li(data-icon= 'arrow-d')
-                a(href= '/resources/download/' + mediaFile['id'])
+                a(rel= 'external', target= '_blank' href= '/resources/download/' + mediaFile['id'])
                     h2= mediaFile['fileName']
         li(data-role= 'list-divider') Magnet Resources
         each resource in resources
@@ -22,5 +22,6 @@ block clientScript
             $.post('/resources/offlineDownload', { entryId: entryId, resourceId: resId })
             .done(function (data) {
                 alert("Offline Download Task: " + data.result.id);
+                location.reload();
             });
         }
