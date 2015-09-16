@@ -61,7 +61,8 @@ router.post('/offlineDownload', function(req, res, next) {
     if (rtn.errorCode == 0) {
         request({
             method: 'POST',
-            url: 'http://localhost:8801/DownloadResource?entryId=' + param.entryId + '&resourceId=' + param.resourceId 
+            url: 'http://localhost:8801/DownloadResource?entryId=' + param.entryId + '&resourceId=' + param.resourceId,
+            json: param
         }, function (error, response, body) {
             res.send(body);
         });

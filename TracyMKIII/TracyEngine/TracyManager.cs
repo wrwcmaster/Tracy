@@ -134,6 +134,7 @@ namespace Tracy
             res.Status = 1;
             _resourceProvider.Collection.Save(res);
             _downloadManager.CheckOnGoingTasks();
+            task = _downloadManager.GetTaskById(task.Id);
             return task;
         }
 
