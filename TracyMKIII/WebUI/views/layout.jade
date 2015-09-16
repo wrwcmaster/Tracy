@@ -29,15 +29,14 @@ html
             div.ui-content(role= 'main')
                 block content
             div(data-role= 'footer')
-        
-        block clientScript
-        script.
-            function htmlForTextWithEmbeddedNewlines(text) {
-                var htmls = [];
-                var lines = text.split(/\n/);
-                var tmpSpan = $(document.createElement('span'));
-                for (var i = 0 ; i < lines.length ; i++) {
-                    htmls.push(tmpSpan.text(lines[i]).html());
+            block clientScript
+            script.
+                function htmlForTextWithEmbeddedNewlines(text) {
+                    var htmls = [];
+                    var lines = text.split(/\n/);
+                    var tmpSpan = $(document.createElement('span'));
+                    for (var i = 0 ; i < lines.length ; i++) {
+                        htmls.push(tmpSpan.text(lines[i]).html());
+                    }
+                    return htmls.join("<br>");
                 }
-                return htmls.join("<br>");
-            }
