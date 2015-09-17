@@ -16,7 +16,7 @@ namespace Tracy
 {
     public class TracyManager
     {
-        private TracyDB _database;
+        private DataAccess.MongoDB _database;
         private EntryProvider _entryProvider;
         public EntryProvider EntryProvider
         {

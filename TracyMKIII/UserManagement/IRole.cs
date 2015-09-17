@@ -10,9 +10,9 @@ namespace UserManagement
     public interface IRole<TKey>
     {
         [DataMember(Name = "id")]
-        TKey Id { get; set; }
+        TKey Id { get; }
 
         [DataMember(Name = "name")]
-        string Name { get; set; }
+        string Name { get; }
     }
 }

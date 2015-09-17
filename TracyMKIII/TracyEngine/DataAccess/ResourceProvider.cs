@@ -10,21 +10,18 @@ using Tracy.DataModel;
 
 namespace Tracy.DataAccess
 {
-    public class ResourceProvider
+    public class ResourceProvider : AbstractMongoDataProvider<Resource>
     {
-        private TracyDB _db;
-        public ResourceProvider(TracyDB database)
-        {
-            _db = database;
-        }
 
-        public MongoCollection<Resource> Collection
+        public override string CollectionName
         {
             get
             {
-                return _db.GetCollection<Resource>("resource");
+                return "resource";
             }
         }
+
+        public ResourceProvider(MongoDB db) : base(db) { }
 
         public IEnumerable<Resource> FindResource(string keywords)
         {

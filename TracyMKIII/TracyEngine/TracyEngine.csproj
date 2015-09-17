@@ -49,9 +49,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataAccess\AbstractMongoDataProvider.cs" />
     <Compile Include="DataAccess\ThunderOfflineDownloadTaskProvider.cs" />
+    <Compile Include="DataAccess\TracyDB.cs" />
+    <Compile Include="DataAccess\UserProvider.cs" />
     <Compile Include="DataModel\BaseMongoModel.cs" />
     <Compile Include="DataModel\ThunderOfflineDownloadTask.cs" />
+    <Compile Include="DataModel\User.cs" />
     <Compile Include="ThunderOfflineDownloadManager.cs" />
     <Compile Include="DataAccess\BaiduOfflineDownloadTaskProvider.cs" />
     <Compile Include="DataModel\BaiduOfflineDownloadTask.cs" />
@@ -59,7 +63,7 @@
     <Compile Include="DataAccess\MediaFileProvider.cs" />
     <Compile Include="DataAccess\EntryProvider.cs" />
     <Compile Include="DataAccess\ResourceProvider.cs" />
-    <Compile Include="DataAccess\TracyDB.cs" />
+    <Compile Include="DataAccess\MongoDB.cs" />
     <Compile Include="DataModel\Entry.cs" />
     <Compile Include="DataModel\MediaFile.cs" />
     <Compile Include="ResourceSource\Dmhy\DmhyHtmlParser.cs" />
@@ -70,6 +74,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TracyFacade.cs" />
     <Compile Include="TracyManager.cs" />
+    <Compile Include="UserManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\BaiduPanAPI\BaiduPanAPI\BaiduPanAPI.csproj">
@@ -83,6 +88,10 @@
     <ProjectReference Include="..\..\..\ThunderOfflineDownloadAPI\ThunderAPI\ThunderAPI.csproj">
       <Project>{90e6ca08-1384-4eed-b8d5-a51abe1c3ec0}</Project>
       <Name>ThunderAPI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UserManagement\UserManagement.csproj">
+      <Project>{885ee39b-243f-4bac-b879-716df317f08c}</Project>
+      <Name>UserManagement</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

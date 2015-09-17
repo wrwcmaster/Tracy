@@ -1,5 +1,4 @@
-﻿using MongoDB.Driver;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,24 +6,22 @@ using System.Threading.Tasks;
 
 namespace Tracy.DataAccess
 {
-    public class TracyDB
+    class TracyDB : MongoDB
     {
-        public TracyDB()
+        public override string ConnectionString
         {
-            //Pre init codes come here
-            _client = new MongoClient(_connectionString);
-            _server = _client.GetServer();
+            get
+            {
+                return "mongodb://localhost:27017";
+            }
         }
 
-        private string _dbName = "tracy";
-        private string _connectionString = "mongodb://localhost:27017";
-        private MongoClient _client;
-        private MongoServer _server;
-
-        public MongoCollection<T> GetCollection<T>(string collectionName)
+        public override string DBName
         {
-            var db = _server.GetDatabase(_dbName);
-            return db.GetCollection<T>(collectionName);
+            get
+            {
+                return "tracy";
+            }
         }
     }
 }

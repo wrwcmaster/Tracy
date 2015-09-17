@@ -10,12 +10,12 @@ namespace UserManagement
     public interface IUserInfo
     {
         [DataMember(Name = "userName")]
-        string UserName { get; set; }
+        string UserName { get; }
 
         [DataMember(Name = "displayName")]
-        string DisplayName { get; set; }
+        string DisplayName { get; }
 
         [DataMember(Name = "email")]
-        string Email { get; set; }
+        string Email { get; }
     }
 }

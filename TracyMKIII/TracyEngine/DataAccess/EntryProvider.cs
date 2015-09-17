@@ -9,22 +9,16 @@ using Tracy.DataModel;
 
 namespace Tracy.DataAccess
 {
-    public class EntryProvider
+    public class EntryProvider : AbstractMongoDataProvider<Entry>
     {
-        private TracyDB _db;
-        public EntryProvider(TracyDB database)
-        {
-            _db = database;
-        }
-
-        public MongoCollection<Entry> Collection
+        public override string CollectionName
         {
             get
             {
-                return _db.GetCollection<Entry>("entry");
+                return "entry";
             }
         }
 
-
+        public EntryProvider(MongoDB db) : base(db) { }
     }
 }

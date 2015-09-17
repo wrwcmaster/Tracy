@@ -18,7 +18,7 @@ namespace Tracy
         private const string BDUSS = "DM4aTBzTTlrS29uUkFMNkY5YmpTMEJlVlVSZn5TY2dWY0t0cm5KbEpJRWE1dFJVQVFBQUFBJCQAAAAAAAAAAAEAAABIEo1NU2NvdHRUZXN0MDgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABpZrVQaWa1UR";
         private BaiduPanAgent _agent;
         private BaiduOfflineDownloadTaskProvider _provider;
-        public BaiduOfflineDownloadManager(TracyDB db)
+        public BaiduOfflineDownloadManager(DataAccess.MongoDB db)
         {
             _provider = new BaiduOfflineDownloadTaskProvider(db);
             _agent = new BaiduPanAgent(BDUSS);

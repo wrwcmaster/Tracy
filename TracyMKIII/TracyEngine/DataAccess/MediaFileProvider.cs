@@ -9,20 +9,16 @@ using Tracy.DataModel;
 
 namespace Tracy.DataAccess
 {
-    public class MediaFileProvider
+    public class MediaFileProvider : AbstractMongoDataProvider<MediaFile>
     {
-        private TracyDB _db;
-        public MediaFileProvider(TracyDB database)
-        {
-            _db = database;
-        }
-
-        public MongoCollection<MediaFile> Collection
+        public override string CollectionName
         {
             get
             {
-                return _db.GetCollection<MediaFile>("mediaFile");
+                return "mediaFile";
             }
         }
+
+        public MediaFileProvider(MongoDB db) : base(db) { }
     }
 }

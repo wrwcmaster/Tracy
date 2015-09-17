@@ -10,10 +10,10 @@ namespace UserManagement
     public interface IUserAccount<TKey> : IUserInfo
     { 
         [DataMember(Name = "id")]
-        TKey Id { get; set; }
+        TKey Id { get; }
    
-        string PasswordHash { get; set; }
+        string PasswordHash { get; }
 
-        List<IRole<TKey>> RoleList { get; set; }
+        List<IRole<TKey>> RoleList { get; }
     }
 }

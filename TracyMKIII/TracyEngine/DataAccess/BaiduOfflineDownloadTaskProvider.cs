@@ -9,20 +9,16 @@ using Tracy.DataModel;
 
 namespace Tracy.DataAccess
 {
-    public class BaiduOfflineDownloadTaskProvider
+    public class BaiduOfflineDownloadTaskProvider : AbstractMongoDataProvider<BaiduOfflineDownloadTask>
     {
-        private TracyDB _db;
-        public BaiduOfflineDownloadTaskProvider(TracyDB database)
-        {
-            _db = database;
-        }
-
-        public MongoCollection<BaiduOfflineDownloadTask> Collection
+        public override string CollectionName
         {
             get
             {
-                return _db.GetCollection<BaiduOfflineDownloadTask>("baiduOfflineDownloadTask");
+                return "baiduOfflineDownloadTask";
             }
         }
+
+        public BaiduOfflineDownloadTaskProvider(MongoDB db) : base(db) { }
     }
 }

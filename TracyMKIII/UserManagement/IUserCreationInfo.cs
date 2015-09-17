@@ -10,6 +10,6 @@ namespace UserManagement
     public interface IUserCreationInfo : IUserInfo
     {
         [DataMember(Name = "password")]
-        string Password { get; set; }
+        string Password { get; }
     }
 }

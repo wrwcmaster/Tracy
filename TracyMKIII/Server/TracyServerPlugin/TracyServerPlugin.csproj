@@ -55,6 +55,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service.cs" />
     <Compile Include="ServiceResponse.cs" />
+    <Compile Include="SessionManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\Gaia.Common\Plugin\PluginCore\PluginCore.csproj">
@@ -64,6 +65,10 @@
     <ProjectReference Include="..\..\TracyEngine\TracyEngine.csproj">
       <Project>{8f49fe56-f7e0-4358-90a4-c2e06bdb6450}</Project>
       <Name>TracyEngine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\UserManagement\UserManagement.csproj">
+      <Project>{885ee39b-243f-4bac-b879-716df317f08c}</Project>
+      <Name>UserManagement</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

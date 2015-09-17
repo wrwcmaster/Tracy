@@ -33,5 +33,8 @@ namespace Tracy
 
         private TracyManager _manager = new TracyManager();
         public TracyManager Manager { get { return _manager; } }
+
+        private UserManager _userManager = new UserManager();
+        public UserManager UserManager { get { return _userManager; } }
     }
 }

@@ -9,20 +9,16 @@ using Tracy.DataModel;
 
 namespace Tracy.DataAccess
 {
-    public class ThunderOfflineDownloadTaskProvider
+    public class ThunderOfflineDownloadTaskProvider : AbstractMongoDataProvider<ThunderOfflineDownloadTask>
     {
-        private TracyDB _db;
-        public ThunderOfflineDownloadTaskProvider(TracyDB database)
-        {
-            _db = database;
-        }
-
-        public MongoCollection<ThunderOfflineDownloadTask> Collection
+        public override string CollectionName
         {
             get
             {
-                return _db.GetCollection<ThunderOfflineDownloadTask>("thunderOfflineDownloadTask");
+                return "thunderOfflineDownloadTask";
             }
         }
+
+        public ThunderOfflineDownloadTaskProvider(MongoDB db) : base(db) { }
     }
 }

@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace UserManagement
 {
-    public interface IUserProvider<TKey>
+    public interface IUserProvider<TKey, TUser> where TUser : IUserAccount<TKey>
     {
-        IUserAccount<TKey> GetUserById(TKey id);
-        IUserAccount<TKey> GetUserByName(string userName);
-        IUserAccount<TKey> CreateUser(IUserCreationInfo newUserInfo);
-        IUserAccount<TKey> UpdateUser(TKey id, IUserInfo newUserInfo);
+        TUser GetUserById(TKey id);
+        TUser GetUserByName(string userName);
+        TUser CreateUser(IUserCreationInfo newUserInfo);
+        TUser UpdateUser(TKey id, IUserInfo newUserInfo);
     }
 }

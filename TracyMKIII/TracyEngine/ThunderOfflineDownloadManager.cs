@@ -19,10 +19,16 @@ namespace Tracy
     {
         //Only for test
         private BaiduPanAgent _baiduAgent;
+        public string Test()
+        {
+            var result = _agent.QueryUrl("magnet:?xt=urn:btih:W4YJLYYQJ25IUVDATJ42ZO3K6W4UZBDC&dn=&tr=http%3A%2F%2F208.67.16.113%3A8000%2Fannounce&tr=udp%3A%2F%2F208.67.16.113%3A8000%2Fannounce&tr=http%3A%2F%2Ftracker.openbittorrent.com%3A80%2Fannounce&tr=http%3A%2F%2Ftracker.publicbt.com%3A80%2Fannounce&tr=http%3A%2F%2Ftracker.prq.to%2Fannounce&tr=http%3A%2F%2Fopen.acgtracker.com%3A1096%2Fannounce&tr=http%3A%2F%2Ftr.bangumi.moe%3A6969%2Fannounce&tr=https%3A%2F%2Ft-115.rhcloud.com%2Fonly_for_ylbud&tr=http%3A%2F%2Fbtfile.sdo.com%3A6961%2Fannounce&tr=http%3A%2F%2Fexodus.desync.com%3A6969%2Fannounce&tr=https%3A%2F%2Ftr.bangumi.moe%3A9696%2Fannounce&tr=http%3A%2F%2F173.254.204.71%3A1096%2Fannounce&tr=http%3A%2F%2F188.190.120.74%3A80%2Fannounce&tr=http%3A%2F%2F95.68.246.30%3A80%2Fannounce&tr=http%3A%2F%2Fmgtracker.org%3A2710%2Fannounce&tr=http%3A%2F%2Ft2.popgo.org%3A7456%2Fannonce&tr=http%3A%2F%2Fshare.camoe.cn%3A8080%2Fannounce&tr=http%3A%2F%2Fretracker.adminko.org%3A80%2Fannounce&tr=http%3A%2F%2Ftracker.xelion.fr%3A6969%2Fannounce");
+            return result.Title;
+        }
 
         private ThunderAgent _agent;
+        
         private ThunderOfflineDownloadTaskProvider _provider;
-        public ThunderOfflineDownloadManager(TracyDB db, string userName, string password)
+        public ThunderOfflineDownloadManager(DataAccess.MongoDB db, string userName, string password)
         {
             _provider = new ThunderOfflineDownloadTaskProvider(db);
             _agent = new ThunderAgent();
@@ -65,7 +71,13 @@ namespace Tracy
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine("[ERROR] " + ex.Message);
+                        Console.WriteLine("[ERROR] " + ex.GetType().Name + ": " + ex.Message);
+                        Console.WriteLine(ex.StackTrace);
+                        if(ex.InnerException!= null)
+                        {
+                            Console.WriteLine(ex.InnerException.GetType().Name + ": " + ex.InnerException.Message);
+                            Console.WriteLine(ex.InnerException.StackTrace);
+                        }
                         task.FailCount = task.FailCount + 1;
                         _provider.Collection.Save(task);
                     }
@@ -90,7 +102,9 @@ namespace Tracy
             }
             else
             {
+                Console.WriteLine("Query Url " + res.Link);
                 var urlQueryResponse = _agent.QueryUrl(res.Link);
+                Console.WriteLine(urlQueryResponse.Title);
                 cid = urlQueryResponse.Cid;
                 System.Threading.Thread.Sleep(1000);
                 commitResponse = _agent.CommitBtTask(urlQueryResponse.Cid, urlQueryResponse.GetIndexArray());

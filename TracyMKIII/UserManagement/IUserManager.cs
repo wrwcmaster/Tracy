@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace UserManagement
 {
-    public interface IUserManager<TKey> : IRoleProvider<TKey>, IUserProvider<TKey>
+    public interface IUserManager<TKey, TUser> where TUser : IUserAccount<TKey>
     {
         bool Login(string userName, string password);
-        IUserAccount<TKey> GetCurrentUser();
+        TUser Register(IUserCreationInfo userInfo);
+        TUser GetCurrentUser();
     }
 }
