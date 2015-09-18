@@ -1,0 +1,18 @@
+extends layout
+
+block header
+    
+block content
+    div
+        form(id= 'registerForm', action='/account/register', method= 'post')
+            h3 Please Enter Your Information
+            input(type= 'text' name= 'userName' id= 'userName' value= '' placeholder= 'User Name')
+            input(type= 'password' name= 'password' id= 'password' value= '' placeholder= 'Password')
+            input(type= 'password' name= 'retypePassword' id= 'retypePassword' value= '' placeholder= 'Retype Password')
+            input(type= 'text' name= 'displayName' id= 'displayName' value= '' placeholder= 'Display Name')
+            input(type= 'text' name= 'email' id= 'email' value= '' placeholder= 'Email')
+            button(type= 'submit' id= 'registerSubmit') Register
+            
+block clientScript
+    script.
+        

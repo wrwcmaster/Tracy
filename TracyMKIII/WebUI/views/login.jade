@@ -1,0 +1,15 @@
+extends layout
+
+block header
+    
+block content
+    div
+        form(id= 'loginForm', action='/account/login', method= 'post')
+            h3 Please Enter User Name and Password
+            input(type= 'text' name= 'userName' id= 'userName' value= '' placeholder= 'User Name')
+            input(type= 'password' name= 'password' id= 'password' value= '' placeholder= 'Password')
+            button(type= 'submit' id= 'loginSubmit') Login
+            
+block clientScript
+    script.
+        
