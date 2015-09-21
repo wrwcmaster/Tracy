@@ -16,7 +16,7 @@ namespace Tracy
 {
     public class TracyManager
     {
-        private DataAccess.MongoDB _database;
+        //private DataAccess.MongoDB _database;
         private EntryProvider _entryProvider;
         public EntryProvider EntryProvider
         {
@@ -40,12 +40,11 @@ namespace Tracy
         }
 
         private DmhyResourceSource _dmhySource;
-        public TracyManager()
+        public TracyManager(DataAccess.MongoDB database)
         {
-            _database = new TracyDB();
-            _entryProvider = new EntryProvider(_database);
-            _resourceProvider = new ResourceProvider(_database);
-            _mediaFileProvider = new MediaFileProvider(_database);
+            _entryProvider = new EntryProvider(database);
+            _resourceProvider = new ResourceProvider(database);
+            _mediaFileProvider = new MediaFileProvider(database);
 
             _dmhySource = new DmhyResourceSource(_resourceProvider);
             _dmhySource.OnResourcesFound += DmhySource_OnResourcesFound;

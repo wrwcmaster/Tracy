@@ -30,11 +30,11 @@ namespace Tracy
             //Pre init codes come here
         }
         #endregion
-
-        private TracyManager _manager = new TracyManager();
+        private static DataAccess.TracyDB _database = new DataAccess.TracyDB();
+        private TracyManager _manager = new TracyManager(_database);
         public TracyManager Manager { get { return _manager; } }
 
-        private UserManager _userManager = new UserManager();
+        private UserManager _userManager = new UserManager(_database);
         public UserManager UserManager { get { return _userManager; } }
     }
 }
