@@ -55,9 +55,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service.cs" />
     <Compile Include="ServiceResponse.cs" />
-    <Compile Include="SessionManager.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Gaia.Common\CommonLib\CommonLib.csproj">
+      <Project>{c586e3c8-1870-4054-833e-cf4322c31e44}</Project>
+      <Name>CommonLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\..\Gaia.Common\Plugin\PluginCore\PluginCore.csproj">
       <Project>{d6a58963-f72d-4e17-bc0b-241cc2923fb4}</Project>
       <Name>PluginCore</Name>

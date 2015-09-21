@@ -14,6 +14,6 @@ namespace UserManagement
    
         string PasswordHash { get; }
 
-        List<IRole<TKey>> RoleList { get; }
+        //List<IRole<TKey>> RoleList { get; }
     }
 }

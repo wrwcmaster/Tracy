@@ -49,16 +49,16 @@ namespace Tracy
             _dmhySource = new DmhyResourceSource(_resourceProvider);
             _dmhySource.OnResourcesFound += DmhySource_OnResourcesFound;
 
-            InitDownloadManager();
+            InitDownloadManager(database);
         }
 
-        private void InitDownloadManager()
+        private void InitDownloadManager(DataAccess.MongoDB database)
         {
             using (var sr = new StreamReader("thunder.ini"))
             {
                 string userName = sr.ReadLine();
                 string password = sr.ReadLine();
-                _downloadManager = new ThunderOfflineDownloadManager(_database, userName, password);
+                _downloadManager = new ThunderOfflineDownloadManager(database, userName, password);
             }
             
         }

@@ -26,13 +26,13 @@ namespace Tracy.DataModel
             get; private set;
         }
 
-        public List<IRole<ObjectId>> RoleList
-        {
-            get;
-        }
+        //public List<IRole<ObjectId>> RoleList
+        //{
+        //    get;
+        //}
 
-        [BsonElement("RoleIds")]
-        private List<ObjectId> _roleIds;
+        //[BsonElement("RoleIds")]
+        //private List<ObjectId> _roleIds;
 
         public string UserName
         {

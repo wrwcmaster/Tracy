@@ -42,6 +42,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -49,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CookieHelper.cs" />
     <Compile Include="DataAccess\AbstractMongoDataProvider.cs" />
     <Compile Include="DataAccess\ThunderOfflineDownloadTaskProvider.cs" />
     <Compile Include="DataAccess\TracyDB.cs" />
@@ -56,6 +58,7 @@
     <Compile Include="DataModel\BaseMongoModel.cs" />
     <Compile Include="DataModel\ThunderOfflineDownloadTask.cs" />
     <Compile Include="DataModel\User.cs" />
+    <Compile Include="SessionManager.cs" />
     <Compile Include="ThunderOfflineDownloadManager.cs" />
     <Compile Include="DataAccess\BaiduOfflineDownloadTaskProvider.cs" />
     <Compile Include="DataModel\BaiduOfflineDownloadTask.cs" />
