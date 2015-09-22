@@ -9,13 +9,10 @@ namespace UserManagement
 {
     public interface IUserInfo
     {
-        [DataMember(Name = "userName")]
         string UserName { get; }
-
-        [DataMember(Name = "displayName")]
+        
         string DisplayName { get; }
 
-        [DataMember(Name = "email")]
         string Email { get; }
     }
 }

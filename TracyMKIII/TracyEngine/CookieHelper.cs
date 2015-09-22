@@ -30,11 +30,10 @@ namespace Tracy
         {
             Dictionary<string, string> rtn = new Dictionary<string, string>();
             var cookieStr = WebOperationContext.Current.IncomingRequest.Headers[HttpRequestHeader.Cookie];
-            if (String.IsNullOrEmpty(cookieStr))
+            if (!string.IsNullOrEmpty(cookieStr))
             {
-                return null;
+                rtn = KeyValuePairParser.Parse(cookieStr, rtn, ';');
             }
-            rtn = KeyValuePairParser.Parse(cookieStr, rtn, ';');
             _requestCookieStore = rtn;
             return _requestCookieStore;
         }
@@ -44,7 +43,7 @@ namespace Tracy
             var cookieStr = KeyValuePairParser.Compose<string, string>(new Dictionary<string, string>()
             {
                 { key, value }
-            }, "%s=%s", ";");
+            }, null, ";");
             WebOperationContext.Current.OutgoingResponse.Headers.Add("Set-Cookie", cookieStr);
         }
 

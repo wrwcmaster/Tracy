@@ -8,8 +8,28 @@ block content
             h3 Please Enter User Name and Password
             input(type= 'text' name= 'userName' id= 'userName' value= '' placeholder= 'User Name')
             input(type= 'password' name= 'password' id= 'password' value= '' placeholder= 'Password')
-            button(type= 'submit' id= 'loginSubmit') Login
-            input(type= 'checkbox' name= 'rememberMe') Remember Me
+            button(type= 'submit' id= 'loginSubmit') login
+            a(href= '/account/register') Register
 block clientScript
     script.
-        
+        var loginForm = $('#loginForm');
+        loginForm.submit(function (event) {
+            $('#loginSubmit').prop('disabled', true);
+            $.ajax({
+                type: loginForm.attr('method'),
+                url: loginForm.attr('action'),
+                data: loginForm.serialize(),
+                success: function (data) {
+                    if (data.errorCode != 0) {
+                        alert(data.errorMessage);
+                        $('#loginSubmit').prop('disabled', false);
+                    } else if (data.result) {
+                        window.location = '/';
+                    } else {
+                        alert('User name or password wrong.');
+                        $('#loginSubmit').prop('disabled', false);
+                    }
+                }
+            });
+            event.preventDefault();
+        });

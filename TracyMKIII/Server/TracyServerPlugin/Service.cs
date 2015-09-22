@@ -14,8 +14,32 @@ using UserManagement;
 namespace TracyServerPlugin
 {
     [ServiceContract]
+    [ServiceBehavior(IncludeExceptionDetailInFaults = true)]
     public class Service
     {
+        private T HandleRequest<T>(Action<T> operation) where T : ServiceResponse, new()
+        {
+            var response = new T();
+            if(TracyFacade.Instance.UserManager.GetCurrentUser() == null)
+            {
+                response.ErrorCode = 403;
+                response.ErrorMessage = "Access Denied.";
+            }
+            else
+            {
+                try
+                {
+                    operation(response);
+                }
+                catch (Exception ex)
+                {
+                    response.ErrorCode = 500;
+                    response.ErrorMessage = ex.GetType().ToString() + ": " + ex.Message + " " + ex.StackTrace;
+                }
+            }
+            return response;
+        }
+
         [OperationContract]
         [WebGet(ResponseFormat =WebMessageFormat.Json)]
         public ServiceResponse Sync(string startPage)
@@ -51,8 +75,10 @@ namespace TracyServerPlugin
         [WebGet(ResponseFormat = WebMessageFormat.Json)]
         public GenericServiceResponse<List<Entry>> GetEntryList()
         {
-            var rtn = TracyFacade.Instance.Manager.EntryProvider.Collection.FindAll().ToList();
-            return new GenericServiceResponse<List<Entry>>(rtn);
+            return HandleRequest<GenericServiceResponse<List<Entry>>>((response) =>
+            {
+                response.Result = TracyFacade.Instance.Manager.EntryProvider.Collection.FindAll().ToList();
+            });
         }
 
         [OperationContract]
@@ -147,19 +173,32 @@ namespace TracyServerPlugin
 
         [OperationContract]
         [WebInvoke(ResponseFormat = WebMessageFormat.Json)]
-        public GenericServiceResponse<User> Register(IUserCreationInfo newUserInfo)
+        public GenericServiceResponse<User> Register(UserCreationInfo newUserInfo)
         {
             var newUser = TracyFacade.Instance.UserManager.Register(newUserInfo);
             return new GenericServiceResponse<User>(newUser);
         }
 
         [DataContract]
+        public class UserCreationInfo : IUserCreationInfo
+        {
+            [DataMember(Name = "displayName")]
+            public string DisplayName { get; set; }
+            [DataMember(Name = "email")]
+            public string Email { get; set; }
+            [DataMember(Name = "password")]
+            public string Password { get; set; }
+            [DataMember(Name = "userName")]
+            public string UserName{ get; set; }
+        }
+
+        [DataContract]
         public class LoginInfo
         {
             [DataMember(Name = "userName")]
-            public string UserName { get; }
+            public string UserName { get; set; }
             [DataMember(Name = "password")]
-            public string Password { get; }
+            public string Password { get; set; }
         }
 
         [OperationContract]

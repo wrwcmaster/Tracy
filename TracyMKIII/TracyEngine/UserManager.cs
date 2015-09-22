@@ -20,7 +20,7 @@ namespace Tracy
 
         public User GetCurrentUser()
         {
-            if (!SessionManager.CurrentSession.ContainsKey("userId"))
+            if (SessionManager.CurrentSession == null || !SessionManager.CurrentSession.ContainsKey("userId"))
             {
                 return null;
             }

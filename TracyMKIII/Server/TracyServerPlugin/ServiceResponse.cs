@@ -26,5 +26,9 @@ namespace TracyServerPlugin
         {
             Result = data;
         }
+
+        public GenericServiceResponse()
+        {
+        }
     }
 }

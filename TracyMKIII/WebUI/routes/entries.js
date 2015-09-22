@@ -9,6 +9,9 @@ router.get('/', function(req, res, next) {
     request('http://localhost:8801/GetEntryList', function (error, response, body) {
         if (!error && response.statusCode == 200) {
             var data = JSON.parse(body);
+            if (data.errorCode == 403) {
+                res.redirect('/account/login');
+            }
             res.render('entries', { title: 'My Entries', entries: data.result });
         }
     });

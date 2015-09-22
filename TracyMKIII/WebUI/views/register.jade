@@ -15,4 +15,21 @@ block content
             
 block clientScript
     script.
-        
+        var registerForm = $('#registerForm');
+        registerForm.submit(function (event) {
+            $('#registerSubmit').prop('disabled', true);
+            $.ajax({
+                type: registerForm.attr('method'),
+                url: registerForm.attr('action'),
+                data: registerForm.serialize(),
+                success: function (data) {
+                    if (data.errorCode != 0) {
+                        alert(data.errorMessage);
+                        $('#registerSubmit').prop('disabled', false);
+                    } else {
+                        window.location = '/';
+                    }
+                }
+            });
+            event.preventDefault();
+        });
