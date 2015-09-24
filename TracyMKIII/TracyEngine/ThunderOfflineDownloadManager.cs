@@ -50,6 +50,21 @@ namespace Tracy
             return _provider.Collection.FindOneById(id);    
         }
 
+        public List<ThunderOfflineDownloadTask> GetOnGoingTasks()
+        {
+            return _provider.Collection.Find(Query<ThunderOfflineDownloadTask>.LT(t => t.Status, 2)).ToList();
+        }
+
+        public void AcceptTask(string taskId)
+        {
+            var task = _provider.Collection.FindOneById(new ObjectId(taskId));
+            if (task != null && task.Status == 0)
+            {
+                task.Status = 1;
+                _provider.Collection.Save(task);
+            }
+        }
+
         public void CheckOnGoingTasks()
         {
             var onGoingTasks = _provider.Collection.Find(Query<ThunderOfflineDownloadTask>.LT(t => t.Status, 2)).ToList();

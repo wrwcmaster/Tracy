@@ -15,7 +15,7 @@ namespace TracyServerPlugin
 {
     [ServiceContract]
     [ServiceBehavior(IncludeExceptionDetailInFaults = true)]
-    public class Service
+    public partial class Service
     {
         private T HandleRequest<T>(string sessionId, Action<T> operation) where T : ServiceResponse, new()
         {
@@ -173,41 +173,11 @@ namespace TracyServerPlugin
         }
 
         [OperationContract]
-        [WebInvoke(ResponseFormat = WebMessageFormat.Json)]
-        public GenericServiceResponse<User> Register(UserCreationInfo newUserInfo)
+        [WebGet(ResponseFormat = WebMessageFormat.Json)]
+        public GenericServiceResponse<List<ThunderOfflineDownloadTask>> GetDownloadTasks()
         {
-            var newUser = TracyFacade.Instance.UserManager.Register(newUserInfo);
-            return new GenericServiceResponse<User>(newUser);
+            return new GenericServiceResponse<List<ThunderOfflineDownloadTask>>(TracyFacade.Instance.Manager.DownloadManager.GetOnGoingTasks());
         }
 
-        [DataContract]
-        public class UserCreationInfo : IUserCreationInfo
-        {
-            [DataMember(Name = "displayName")]
-            public string DisplayName { get; set; }
-            [DataMember(Name = "email")]
-            public string Email { get; set; }
-            [DataMember(Name = "password")]
-            public string Password { get; set; }
-            [DataMember(Name = "userName")]
-            public string UserName{ get; set; }
-        }
-
-        [DataContract]
-        public class LoginInfo
-        {
-            [DataMember(Name = "userName")]
-            public string UserName { get; set; }
-            [DataMember(Name = "password")]
-            public string Password { get; set; }
-        }
-
-        [OperationContract]
-        [WebInvoke(ResponseFormat = WebMessageFormat.Json)]
-        public GenericServiceResponse<string> Login(LoginInfo loginInfo)
-        {
-            TracyFacade.Instance.UserManager.Login(loginInfo.UserName, loginInfo.Password);
-            return new GenericServiceResponse<string>(SessionManager.CurrentSession.Id);
-        }
     }
 }
