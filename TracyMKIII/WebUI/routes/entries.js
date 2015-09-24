@@ -6,7 +6,8 @@ var request = require('request');
 
 /* GET entries page. */
 router.get('/', function(req, res, next) {
-    request('http://localhost:8801/GetEntryList', function (error, response, body) {
+    var sessionId = req.cookies.sessionId;
+    request('http://localhost:8801/GetEntryList?sessionId=' + sessionId, function (error, response, body) {
         if (!error && response.statusCode == 200) {
             var data = JSON.parse(body);
             if (data.errorCode == 403) {

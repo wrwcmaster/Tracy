@@ -52,18 +52,23 @@ namespace Tracy
         {
             var rtn = CreateNewSession();
             _currentSessionId = rtn.Id;
-            CookieHelper.SetResponseCookie("session-id", rtn.Id);
             return rtn;
+        }
+
+        public static Session RestoreSession(string sessionId)
+        {
+            if (_sessionDict.ContainsKey(sessionId))
+            {
+                _currentSessionId = sessionId;
+                return _sessionDict[_currentSessionId];
+            }
+            return null;
         }
 
         public static Session CurrentSession
         {
             get
             {
-                if(_currentSessionId == null)
-                {
-                    _currentSessionId = CookieHelper.GetRequestCookie("session-id");
-                }
                 if(_currentSessionId != null && _sessionDict.ContainsKey(_currentSessionId))
                 {
                     return _sessionDict[_currentSessionId];

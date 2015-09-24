@@ -17,8 +17,9 @@ namespace TracyServerPlugin
     [ServiceBehavior(IncludeExceptionDetailInFaults = true)]
     public class Service
     {
-        private T HandleRequest<T>(Action<T> operation) where T : ServiceResponse, new()
+        private T HandleRequest<T>(string sessionId, Action<T> operation) where T : ServiceResponse, new()
         {
+            SessionManager.RestoreSession(sessionId);
             var response = new T();
             if(TracyFacade.Instance.UserManager.GetCurrentUser() == null)
             {
@@ -73,9 +74,9 @@ namespace TracyServerPlugin
 
         [OperationContract]
         [WebGet(ResponseFormat = WebMessageFormat.Json)]
-        public GenericServiceResponse<List<Entry>> GetEntryList()
+        public GenericServiceResponse<List<Entry>> GetEntryList(string sessionId)
         {
-            return HandleRequest<GenericServiceResponse<List<Entry>>>((response) =>
+            return HandleRequest<GenericServiceResponse<List<Entry>>>(sessionId, (response) =>
             {
                 response.Result = TracyFacade.Instance.Manager.EntryProvider.Collection.FindAll().ToList();
             });
@@ -203,10 +204,10 @@ namespace TracyServerPlugin
 
         [OperationContract]
         [WebInvoke(ResponseFormat = WebMessageFormat.Json)]
-        public GenericServiceResponse<User> Login(LoginInfo loginInfo)
+        public GenericServiceResponse<string> Login(LoginInfo loginInfo)
         {
             TracyFacade.Instance.UserManager.Login(loginInfo.UserName, loginInfo.Password);
-            return new GenericServiceResponse<User>(TracyFacade.Instance.UserManager.GetCurrentUser());
+            return new GenericServiceResponse<string>(SessionManager.CurrentSession.Id);
         }
     }
 }

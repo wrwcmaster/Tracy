@@ -69,6 +69,9 @@ router.post('/login', function(req, res, next) {
             url: 'http://localhost:8801/Login',
             json: param
         }, function (error, response, body) {
+            if (body.result) {
+                res.cookie('sessionId', body.result);
+            }
             res.send(body);
         });
     } else {
