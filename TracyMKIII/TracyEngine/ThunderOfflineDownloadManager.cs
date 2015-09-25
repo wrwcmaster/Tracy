@@ -50,6 +50,12 @@ namespace Tracy
             return _provider.Collection.FindOneById(id);    
         }
 
+        public ThunderOfflineDownloadTask SaveTask(ThunderOfflineDownloadTask task) //Temp
+        {
+            _provider.Collection.Save(task);
+            return task;
+        }
+
         public List<ThunderOfflineDownloadTask> GetOnGoingTasks()
         {
             return _provider.Collection.Find(Query<ThunderOfflineDownloadTask>.LT(t => t.Status, 2)).ToList();

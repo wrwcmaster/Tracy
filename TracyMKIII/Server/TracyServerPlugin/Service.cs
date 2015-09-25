@@ -165,5 +165,16 @@ namespace TracyServerPlugin
             return new GenericServiceResponse<List<ThunderOfflineDownloadTask>>(TracyFacade.Instance.Manager.DownloadManager.GetOnGoingTasks());
         }
 
+        public ServiceResponse NotifyTaskStart(string taskId)
+        {
+            var task = TracyFacade.Instance.Manager.DownloadManager.GetTaskById(new ObjectId(taskId));
+            if (task != null)
+            {
+                Console.WriteLine("Task start confirmed: " + task.Resource.Title);
+                task.Status = 1;
+                TracyFacade.Instance.Manager.DownloadManager.SaveTask(task);
+            }
+            return new ServiceResponse();
+        }
     }
 }

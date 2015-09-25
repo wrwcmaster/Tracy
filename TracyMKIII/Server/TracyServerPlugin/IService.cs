@@ -20,9 +20,7 @@ namespace TracyServerPlugin
         [OperationContract]
         [WebInvoke(ResponseFormat = WebMessageFormat.Json, UriTemplate = "/DownloadResource?entryId={entryId}&resourceId={resourceId}")]
         GenericServiceResponse<ThunderOfflineDownloadTask> DownloadResource(string entryId, string resourceId);
-        [OperationContract]
-        [WebGet(ResponseFormat = WebMessageFormat.Json)]
-        GenericServiceResponse<List<ThunderOfflineDownloadTask>> GetDownloadTasks();
+        
         [OperationContract]
         [WebGet(ResponseFormat = WebMessageFormat.Json)]
         GenericServiceResponse<string> GetDownloadUrl(string mediaFileId);
@@ -35,12 +33,16 @@ namespace TracyServerPlugin
         [OperationContract]
         [WebGet(ResponseFormat = WebMessageFormat.Json)]
         GenericServiceResponse<List<Resource>> GetResourceList(string entryId);
+
+
         [OperationContract]
         [WebInvoke(ResponseFormat = WebMessageFormat.Json)]
         GenericServiceResponse<string> Login(Service.LoginInfo loginInfo);
         [OperationContract]
         [WebInvoke(ResponseFormat = WebMessageFormat.Json)]
         GenericServiceResponse<User> Register(Service.UserCreationInfo newUserInfo);
+
+
         [OperationContract]
         [WebGet(ResponseFormat = WebMessageFormat.Json)]
         GenericServiceResponse<List<Resource>> SearchResource(string keywords);
@@ -50,5 +52,12 @@ namespace TracyServerPlugin
         [OperationContract]
         [WebGet(ResponseFormat = WebMessageFormat.Json)]
         GenericServiceResponse<string> Test();
+
+        [OperationContract]
+        [WebInvoke(ResponseFormat = WebMessageFormat.Json)]
+        ServiceResponse NotifyTaskStart(string taskId);
+        [OperationContract]
+        [WebGet(ResponseFormat = WebMessageFormat.Json)]
+        GenericServiceResponse<List<ThunderOfflineDownloadTask>> GetDownloadTasks();
     }
 }

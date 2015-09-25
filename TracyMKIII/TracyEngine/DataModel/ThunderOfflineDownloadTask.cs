@@ -20,16 +20,21 @@ namespace Tracy.DataModel
         public int Status { get; set; }
         public int FailCount { get; set; }
 
-        [DataMember(Name = "link")]
-        public string Link
+        private Resource _res = null;
+        [DataMember(Name = "resource")]
+        public Resource Resource
         {
             get
             {
-                return TracyFacade.Instance.Manager.ResourceProvider.Collection.FindOneById(ResourceId).Link;
+                if (_res == null)
+                {
+                    _res = TracyFacade.Instance.Manager.ResourceProvider.Collection.FindOneById(ResourceId); //TODO: manually init this
+                }
+                return _res;
             }
             set
             {
-
+                _res = value;
             }
         }
     }
