@@ -13,9 +13,8 @@ using UserManagement;
 
 namespace TracyServerPlugin
 {
-    [ServiceContract]
     [ServiceBehavior(IncludeExceptionDetailInFaults = true)]
-    public partial class Service
+    public partial class Service : IService
     {
         private T HandleRequest<T>(string sessionId, Action<T> operation) where T : ServiceResponse, new()
         {
@@ -41,8 +40,7 @@ namespace TracyServerPlugin
             return response;
         }
 
-        [OperationContract]
-        [WebGet(ResponseFormat =WebMessageFormat.Json)]
+        
         public ServiceResponse Sync(string startPage)
         {
             if (String.IsNullOrEmpty(startPage))
@@ -56,24 +54,21 @@ namespace TracyServerPlugin
             return new ServiceResponse();
         }
 
-        [OperationContract]
-        [WebGet(ResponseFormat = WebMessageFormat.Json)]
+        
         public ServiceResponse CheckDownloadTasks()
         {
             TracyFacade.Instance.Manager.CheckDownloadTasks();
             return new ServiceResponse();
         }
 
-        [OperationContract]
-        [WebInvoke(ResponseFormat = WebMessageFormat.Json)]
+        
         public GenericServiceResponse<Entry> AddEntry(Entry newEntry)
         {
             TracyFacade.Instance.Manager.AddEntry(newEntry);
             return new GenericServiceResponse<Entry>(newEntry);
         }
 
-        [OperationContract]
-        [WebGet(ResponseFormat = WebMessageFormat.Json)]
+        
         public GenericServiceResponse<List<Entry>> GetEntryList(string sessionId)
         {
             return HandleRequest<GenericServiceResponse<List<Entry>>>(sessionId, (response) =>
@@ -82,8 +77,7 @@ namespace TracyServerPlugin
             });
         }
 
-        [OperationContract]
-        [WebGet(ResponseFormat = WebMessageFormat.Json)]
+        
         public GenericServiceResponse<List<Resource>> GetResourceList(string entryId)
         {
             List<Resource> rtn = new List<Resource>();
@@ -96,16 +90,14 @@ namespace TracyServerPlugin
             return new GenericServiceResponse<List<Resource>>(rtn);
         }
 
-        [OperationContract]
-        [WebGet(ResponseFormat = WebMessageFormat.Json)]
+        
         public GenericServiceResponse<List<Resource>> SearchResource(string keywords)
         {
             var rtn = TracyFacade.Instance.Manager.ResourceProvider.FindResource(keywords).ToList();
             return new GenericServiceResponse<List<Resource>>(rtn);
         }
 
-        [OperationContract]
-        [WebGet(ResponseFormat = WebMessageFormat.Json)]
+        
         public GenericServiceResponse<CheckMatchedResourcesResult> CheckMatchedResources(string keywords, string regExpr, int sampleCount)
         {
             var resourceList = TracyFacade.Instance.Manager.ResourceProvider.FindResource(keywords);
@@ -118,8 +110,7 @@ namespace TracyServerPlugin
             });
         }
 
-        [OperationContract]
-        [WebInvoke(ResponseFormat = WebMessageFormat.Json, UriTemplate= "/DownloadResource?entryId={entryId}&resourceId={resourceId}")]
+        
         public GenericServiceResponse<ThunderOfflineDownloadTask> DownloadResource(string entryId, string resourceId)
         {
             Entry entry = TracyFacade.Instance.Manager.EntryProvider.Collection.FindOneById(new ObjectId(entryId));
@@ -128,8 +119,7 @@ namespace TracyServerPlugin
             return new GenericServiceResponse<ThunderOfflineDownloadTask>(rtn);
         }
 
-        [OperationContract]
-        [WebGet(ResponseFormat = WebMessageFormat.Json)]
+        
         public GenericServiceResponse<List<MediaFile>> GetMediaFileList(string entryId)
         {
             List<MediaFile> rtn = new List<MediaFile>();
@@ -142,16 +132,14 @@ namespace TracyServerPlugin
             return new GenericServiceResponse<List<MediaFile>>(rtn);
         }
 
-        [OperationContract]
-        [WebGet(ResponseFormat = WebMessageFormat.Json)]
+        
         public GenericServiceResponse<string> GetDownloadUrl(string mediaFileId)
         {
             var file = TracyFacade.Instance.Manager.MediaFileProvider.Collection.FindOneById(new ObjectId(mediaFileId));
             return new GenericServiceResponse<string>(TracyFacade.Instance.Manager.GetSharedUrl(file));
         }
 
-        [OperationContract]
-        [WebGet(ResponseFormat = WebMessageFormat.Json)]
+        
         public GenericServiceResponse<string> Test()
         {
             return new GenericServiceResponse<string>(OperationContext.Current.SessionId);
@@ -172,8 +160,6 @@ namespace TracyServerPlugin
             
         }
 
-        [OperationContract]
-        [WebGet(ResponseFormat = WebMessageFormat.Json)]
         public GenericServiceResponse<List<ThunderOfflineDownloadTask>> GetDownloadTasks()
         {
             return new GenericServiceResponse<List<ThunderOfflineDownloadTask>>(TracyFacade.Instance.Manager.DownloadManager.GetOnGoingTasks());

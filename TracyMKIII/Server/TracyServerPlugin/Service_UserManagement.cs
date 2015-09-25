@@ -17,8 +17,7 @@ namespace TracyServerPlugin
     {
         #region UserManagement
 
-        [OperationContract]
-        [WebInvoke(ResponseFormat = WebMessageFormat.Json)]
+        
         public GenericServiceResponse<User> Register(UserCreationInfo newUserInfo)
         {
             var newUser = TracyFacade.Instance.UserManager.Register(newUserInfo);
@@ -47,8 +46,7 @@ namespace TracyServerPlugin
             public string Password { get; set; }
         }
 
-        [OperationContract]
-        [WebInvoke(ResponseFormat = WebMessageFormat.Json)]
+        
         public GenericServiceResponse<string> Login(LoginInfo loginInfo)
         {
             TracyFacade.Instance.UserManager.Login(loginInfo.UserName, loginInfo.Password);

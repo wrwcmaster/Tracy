@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PluginContainer", "..\..\Ga
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserManagement", "UserManagement\UserManagement.csproj", "{885EE39B-243F-4BAC-B879-716DF317F08C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TracyDownloadService", "TracyDownloadService\TracyDownloadService.csproj", "{DD5477A1-E176-4754-93A7-F52800D2637D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,10 @@ Global
 		{885EE39B-243F-4BAC-B879-716DF317F08C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{885EE39B-243F-4BAC-B879-716DF317F08C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{885EE39B-243F-4BAC-B879-716DF317F08C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD5477A1-E176-4754-93A7-F52800D2637D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD5477A1-E176-4754-93A7-F52800D2637D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD5477A1-E176-4754-93A7-F52800D2637D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD5477A1-E176-4754-93A7-F52800D2637D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -85,5 +91,6 @@ Global
 		{1AA07FAD-83B1-4419-A12D-4A7922093FB4} = {1530C0EC-3851-4E93-A7A1-211A3393613E}
 		{22E09AA2-B9F4-48AB-86C3-342BDC735C78} = {1530C0EC-3851-4E93-A7A1-211A3393613E}
 		{885EE39B-243F-4BAC-B879-716DF317F08C} = {DDEBC11A-F741-435C-8FFB-CBDD1AE61036}
+		{DD5477A1-E176-4754-93A7-F52800D2637D} = {EDD02AE6-A51D-422E-8160-A816D87729AB}
 	EndGlobalSection
 EndGlobal

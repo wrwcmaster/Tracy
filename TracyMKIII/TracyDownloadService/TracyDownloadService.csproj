@@ -1,18 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1FEA7435-9DBB-43F7-AE00-E01000021887}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{DD5477A1-E176-4754-93A7-F52800D2637D}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TracyServerPlugin</RootNamespace>
-    <AssemblyName>TracyServerPlugin</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <RootNamespace>TracyDownloadService</RootNamespace>
+    <AssemblyName>TracyDownloadService</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -30,14 +33,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MongoDB.Bson, Version=1.9.2.235, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\3rdParty\MangoDBDriver\MongoDB.Bson.dll</HintPath>
-    </Reference>
-    <Reference Include="MongoDB.Driver, Version=1.9.2.235, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\3rdParty\MangoDBDriver\MongoDB.Driver.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
@@ -47,33 +42,38 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CheckMatchedResourcesResult.cs" />
-    <Compile Include="IService.cs" />
-    <Compile Include="PluginInterface.cs" />
+    <Compile Include="JsonContentTypeMapper.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Service_UserManagement.cs" />
-    <Compile Include="Service.cs" />
-    <Compile Include="ServiceResponse.cs" />
+    <Compile Include="TracyServiceClient.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Gaia.Common\CommonLib\CommonLib.csproj">
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\BaiduPanAPI\BaiduPanAPI\BaiduPanAPI.csproj">
+      <Project>{81320d4e-94d6-40b9-9c51-41659706839d}</Project>
+      <Name>BaiduPanAPI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Gaia.Common\CommonLib\CommonLib.csproj">
       <Project>{c586e3c8-1870-4054-833e-cf4322c31e44}</Project>
       <Name>CommonLib</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Gaia.Common\Plugin\PluginCore\PluginCore.csproj">
-      <Project>{d6a58963-f72d-4e17-bc0b-241cc2923fb4}</Project>
-      <Name>PluginCore</Name>
+    <ProjectReference Include="..\..\..\ThunderOfflineDownloadAPI\ThunderAPI\ThunderAPI.csproj">
+      <Project>{90e6ca08-1384-4eed-b8d5-a51abe1c3ec0}</Project>
+      <Name>ThunderAPI</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\TracyEngine\TracyEngine.csproj">
+    <ProjectReference Include="..\Server\TracyServerPlugin\TracyServerPlugin.csproj">
+      <Project>{1fea7435-9dbb-43f7-ae00-e01000021887}</Project>
+      <Name>TracyServerPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TracyEngine\TracyEngine.csproj">
       <Project>{8f49fe56-f7e0-4358-90a4-c2e06bdb6450}</Project>
       <Name>TracyEngine</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\UserManagement\UserManagement.csproj">
-      <Project>{885ee39b-243f-4bac-b879-716df317f08c}</Project>
-      <Name>UserManagement</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
