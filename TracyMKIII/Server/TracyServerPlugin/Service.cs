@@ -1,4 +1,5 @@
 ﻿using MongoDB.Bson;
+using MongoDB.Driver.Builders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -165,14 +166,48 @@ namespace TracyServerPlugin
             return new GenericServiceResponse<List<ThunderOfflineDownloadTask>>(TracyFacade.Instance.Manager.DownloadManager.GetOnGoingTasks());
         }
 
-        public ServiceResponse NotifyTaskStart(string taskId)
+        public ServiceResponse NotifyTaskStart(ThunderOfflineDownloadTask taskInfo)
         {
-            var task = TracyFacade.Instance.Manager.DownloadManager.GetTaskById(new ObjectId(taskId));
+            var task = TracyFacade.Instance.Manager.DownloadManager.GetTaskById(new ObjectId(taskInfo.IdString));
             if (task != null)
             {
                 Console.WriteLine("Task start confirmed: " + task.Resource.Title);
                 task.Status = 1;
+                task.Cid = taskInfo.Cid;
+                task.TaskId = taskInfo.TaskId;
                 TracyFacade.Instance.Manager.DownloadManager.SaveTask(task);
+            }
+            return new ServiceResponse();
+        }
+
+        public ServiceResponse NotifyTaskComplete(string taskId)
+        {
+            var task = TracyFacade.Instance.Manager.DownloadManager.GetTaskById(new ObjectId(taskId));
+            if (task != null)
+            {
+                Console.WriteLine("Task complete confirmed: " + task.Resource.Title);
+                task.Status = 2;
+                TracyFacade.Instance.Manager.DownloadManager.SaveTask(task);
+            }
+            return new ServiceResponse();
+        }
+
+        public ServiceResponse NotifyFileDownloadComplete(NotifyFileDownloadCompleteParameter parameter)
+        {
+            var task = TracyFacade.Instance.Manager.DownloadManager.GetTaskById(new ObjectId(parameter.TaskId));
+            if (task != null)
+            {
+                var queryBuilder = new QueryBuilder<MediaFile>();
+                var query = queryBuilder.And(queryBuilder.EQ((file) => file.FileName, parameter.MediaFile.FileName), queryBuilder.EQ((file) => file.Type, parameter.MediaFile.Type));
+                if (TracyFacade.Instance.Manager.MediaFileProvider.Collection.Count(query) == 0)
+                {
+                    TracyFacade.Instance.Manager.MediaFileProvider.Collection.Insert(parameter.MediaFile);
+                    //Link to entry
+                    var entry = TracyFacade.Instance.Manager.EntryProvider.Collection.FindOneById(task.EntryId);
+                    entry.MediaFileIds.Add(parameter.MediaFile.Id);
+                    TracyFacade.Instance.Manager.EntryProvider.Collection.Save(entry);
+                    Console.WriteLine(string.Format("File {0} added to entry {1}", parameter.MediaFile.FileName, entry.Name));
+                }
             }
             return new ServiceResponse();
         }

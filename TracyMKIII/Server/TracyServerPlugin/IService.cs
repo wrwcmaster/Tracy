@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using Tracy.DataModel;
@@ -55,9 +56,24 @@ namespace TracyServerPlugin
 
         [OperationContract]
         [WebInvoke(ResponseFormat = WebMessageFormat.Json)]
-        ServiceResponse NotifyTaskStart(string taskId);
+        ServiceResponse NotifyTaskStart(ThunderOfflineDownloadTask task);
+        [OperationContract]
+        [WebInvoke(ResponseFormat = WebMessageFormat.Json)]
+        ServiceResponse NotifyTaskComplete(string taskId);
+        [OperationContract]
+        [WebInvoke(ResponseFormat = WebMessageFormat.Json)]
+        ServiceResponse NotifyFileDownloadComplete(NotifyFileDownloadCompleteParameter param);
         [OperationContract]
         [WebGet(ResponseFormat = WebMessageFormat.Json)]
         GenericServiceResponse<List<ThunderOfflineDownloadTask>> GetDownloadTasks();
+    }
+
+    [DataContract]
+    public class NotifyFileDownloadCompleteParameter
+    {
+        [DataMember(Name = "taskId")]
+        public string TaskId { get; set; }
+        [DataMember(Name = "mediaFile")]
+        public MediaFile MediaFile { get; set; }
     }
 }

@@ -132,8 +132,10 @@ namespace Tracy
             var task = _downloadManager.CreateTask(entry, res);
             res.Status = 1;
             _resourceProvider.Collection.Save(res);
-            _downloadManager.CheckOnGoingTasks();
-            task = _downloadManager.GetTaskById(task.Id);
+            
+            //Move download opperation to client side
+            //_downloadManager.CheckOnGoingTasks(); 
+            //task = _downloadManager.GetTaskById(task.Id);
             return task;
         }
 
