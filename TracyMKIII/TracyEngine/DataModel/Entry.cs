@@ -58,8 +58,23 @@ namespace Tracy.DataModel
 
         public bool IsTitleMatched(string title)
         {
-            Regex regEx = new Regex(RegExpr.ToUpper());
-            return regEx.Match(title.ToUpper()).Success;
+            if (string.IsNullOrEmpty(RegExpr))
+            {
+                var keywords = SearchKeywords.Split(' ');
+                foreach(var keyword in keywords)
+                {
+                    if (!title.Contains(keyword))
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            else
+            {
+                Regex regEx = new Regex(RegExpr.ToUpper());
+                return regEx.Match(title.ToUpper()).Success;
+            }
         }
     }
 }

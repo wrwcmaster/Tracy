@@ -99,7 +99,7 @@ namespace Tracy
 
         private void ProcessTracingResources(List<Resource> list)
         {
-            var entries = _entryProvider.Collection.Find(Query<Entry>.EQ(e => e.TracingEnabled, true)).ToList();
+            var entries = _entryProvider.Collection.FindAll().ToList();
             foreach (Resource res in list)
             {
                 Entry matchedEntry = null;
@@ -108,13 +108,16 @@ namespace Tracy
                     if (entry.IsTitleMatched(res.Title))
                     {
                         Console.WriteLine("Resource " + res.Title + " matched entry " + entry.Name);
-                        matchedEntry = entry;
-
+                        
                         if (!entry.ResourceIds.Contains(res.Id))
                         {
                             entry.ResourceIds.Add(res.Id);
                             _entryProvider.Collection.Save(entry);
                             break; //TODO: multiple match
+                        }
+
+                        if (entry.TracingEnabled){
+                            matchedEntry = entry;
                         }
                     }
                 }

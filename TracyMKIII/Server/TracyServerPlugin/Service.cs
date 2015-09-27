@@ -88,6 +88,7 @@ namespace TracyServerPlugin
                 Resource res = TracyFacade.Instance.Manager.ResourceProvider.Collection.FindOneById(resId);
                 if(res != null) rtn.Add(res);
             }
+            rtn.Sort((res1, res2) => Comparer<DateTime>.Default.Compare(res1.PublishDate, res2.PublishDate) * -1); //order by publish date desc
             return new GenericServiceResponse<List<Resource>>(rtn);
         }
 
@@ -107,7 +108,7 @@ namespace TracyServerPlugin
             {
                 FoundCount = resourceList.Count(),
                 MatchedCount = result.Count(),
-                SampleList = result.Take(sampleCount).Select((res) => res.Title).ToList()
+                SampleList = result.OrderByDescending(res => res.PublishDate).Take(sampleCount).Select((res) => res.Title).ToList()
             });
         }
 
