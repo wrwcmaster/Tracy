@@ -12,6 +12,8 @@ using Tracy.DataModel;
 using Tracy.ResourceSource.Dmhy;
 using TracyServerPlugin;
 using Gaia.Common.Event;
+using System.ServiceModel.Description;
+
 namespace TracyDownloadService
 {
     class FileCompleteEventArgs : EventArgs
@@ -36,16 +38,23 @@ namespace TracyDownloadService
 
         private void InitTracyAgent()
         {
-            //Create uTorrent Web API client
-            CustomBinding uTorrentCustomBinding = new CustomBinding(
-                new WebMessageEncodingBindingElement() { ContentTypeMapper = new JsonContentTypeMapper() },
-                new HttpTransportBindingElement() { ManualAddressing = true }
-                );
-
-            WebChannelFactory<IService> factory = new WebChannelFactory<IService>();
-            factory.Endpoint.Address = new EndpointAddress("http://10.0.0.7:8801");
-            factory.Endpoint.Binding = uTorrentCustomBinding;
-            _tracyAgent = factory.CreateChannel();
+            using (var sr = new StreamReader("tracy.ini"))
+            {
+                Console.WriteLine(1);
+                string serviceUrl = sr.ReadLine();
+                Console.WriteLine(2);
+                //Create uTorrent Web API client
+                CustomBinding uTorrentCustomBinding = new CustomBinding(
+                    new WebMessageEncodingBindingElement() { ContentTypeMapper = new JsonContentTypeMapper() },
+                    new HttpTransportBindingElement() { ManualAddressing = true }
+                    );
+                Console.WriteLine(3);
+                WebChannelFactory<IService> factory = new WebChannelFactory<IService>(new WebHttpEndpoint(ContractDescription.GetContract(typeof(IService))));
+                factory.Endpoint.Address = new EndpointAddress(serviceUrl);
+                factory.Endpoint.Binding = uTorrentCustomBinding;
+                Console.WriteLine(4);
+                _tracyAgent = factory.CreateChannel();
+            }
         }
 
         private void InitThunderAgent()
