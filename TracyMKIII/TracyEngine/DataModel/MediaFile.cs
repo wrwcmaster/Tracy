@@ -38,5 +38,23 @@ namespace Tracy.DataModel
 
         [DataMember(Name = "status")]
         public int Status { get; set; }
+
+        public ObjectId ResourceId
+        {
+            get; set;
+        }
+
+        [DataMember(Name = "resourceId")]
+        public string ResourceIdString
+        {
+            get
+            {
+                return ResourceId != null ? ResourceId.ToString() : null;
+            }
+            set
+            {
+                ResourceId = new ObjectId(value);
+            }
+        }
     }
 }

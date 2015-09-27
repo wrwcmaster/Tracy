@@ -40,19 +40,15 @@ namespace TracyDownloadService
         {
             using (var sr = new StreamReader("tracy.ini"))
             {
-                Console.WriteLine(1);
                 string serviceUrl = sr.ReadLine();
-                Console.WriteLine(2);
                 //Create uTorrent Web API client
                 CustomBinding uTorrentCustomBinding = new CustomBinding(
                     new WebMessageEncodingBindingElement() { ContentTypeMapper = new JsonContentTypeMapper() },
                     new HttpTransportBindingElement() { ManualAddressing = true }
                     );
-                Console.WriteLine(3);
                 WebChannelFactory<IService> factory = new WebChannelFactory<IService>(new WebHttpEndpoint(ContractDescription.GetContract(typeof(IService))));
                 factory.Endpoint.Address = new EndpointAddress(serviceUrl);
                 factory.Endpoint.Binding = uTorrentCustomBinding;
-                Console.WriteLine(4);
                 _tracyAgent = factory.CreateChannel();
             }
         }

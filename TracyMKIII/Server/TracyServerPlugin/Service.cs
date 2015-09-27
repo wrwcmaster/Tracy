@@ -121,20 +121,48 @@ namespace TracyServerPlugin
             return new GenericServiceResponse<ThunderOfflineDownloadTask>(rtn);
         }
 
-        
-        public GenericServiceResponse<List<MediaFile>> GetMediaFileList(string entryId)
+        public GenericServiceResponse<List<UserMediaFile>> GetMediaFileList(string sessionId, string entryId)
         {
-            List<MediaFile> rtn = new List<MediaFile>();
-            Entry entry = TracyFacade.Instance.Manager.EntryProvider.Collection.FindOneById(new ObjectId(entryId));
-            foreach (ObjectId fileId in entry.MediaFileIds)
+            return HandleRequest<GenericServiceResponse<List<UserMediaFile>>>(sessionId, (response) =>
             {
-                MediaFile file = TracyFacade.Instance.Manager.MediaFileProvider.Collection.FindOneById(fileId);
-                if (file != null) rtn.Add(file);
-            }
-            return new GenericServiceResponse<List<MediaFile>>(rtn);
+                var user = TracyFacade.Instance.UserManager.GetCurrentUser();
+                if (user != null)
+                {
+                    List<UserMediaFile> rtn = new List<UserMediaFile>();
+                    Entry entry = TracyFacade.Instance.Manager.EntryProvider.Collection.FindOneById(new ObjectId(entryId));
+                    foreach (ObjectId fileId in entry.MediaFileIds)
+                    {
+                        MediaFile file = TracyFacade.Instance.Manager.MediaFileProvider.Collection.FindOneById(fileId);
+                        if (file != null)
+                        {
+                            var userFile = new UserMediaFile() { MediaFile = file, IsNew = true };
+                            var history = TracyFacade.Instance.Manager.UserBrowseHistoryProvider.GetBrowseHistory(user.Id, file.Id);
+                            if(history != null)
+                            {
+                                userFile.IsNew = false;
+                                userFile.LastBrowsDate = history.BrowseDate;
+                            }
+                            rtn.Add(userFile);
+                        }
+                    }
+                    response.Result = rtn;
+                }
+            });
         }
 
-        
+        public ServiceResponse AddBrowseHistory(AddBrowseHistoryParameter parameter)
+        {
+            return HandleRequest<ServiceResponse>(parameter.SessionId, (response) =>
+            {
+                var user = TracyFacade.Instance.UserManager.GetCurrentUser();
+                if (user != null)
+                {
+                    TracyFacade.Instance.Manager.UserBrowseHistoryProvider.AddBrowseHistory(user.Id, new ObjectId(parameter.MediaFileId), DateTime.UtcNow);
+                }
+            });
+        }
+
+
         public GenericServiceResponse<string> GetDownloadUrl(string mediaFileId)
         {
             var file = TracyFacade.Instance.Manager.MediaFileProvider.Collection.FindOneById(new ObjectId(mediaFileId));
@@ -202,6 +230,7 @@ namespace TracyServerPlugin
                 var query = queryBuilder.And(queryBuilder.EQ((file) => file.FileName, parameter.MediaFile.FileName), queryBuilder.EQ((file) => file.Type, parameter.MediaFile.Type));
                 if (TracyFacade.Instance.Manager.MediaFileProvider.Collection.Count(query) == 0)
                 {
+                    parameter.MediaFile.ResourceId = task.ResourceId;
                     TracyFacade.Instance.Manager.MediaFileProvider.Collection.Insert(parameter.MediaFile);
                     //Link to entry
                     var entry = TracyFacade.Instance.Manager.EntryProvider.Collection.FindOneById(task.EntryId);

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Web;
@@ -30,10 +31,14 @@ namespace TracyServerPlugin
         GenericServiceResponse<List<Entry>> GetEntryList(string sessionId);
         [OperationContract]
         [WebGet(ResponseFormat = WebMessageFormat.Json)]
-        GenericServiceResponse<List<MediaFile>> GetMediaFileList(string entryId);
+        GenericServiceResponse<List<UserMediaFile>> GetMediaFileList(string sessionId, string entryId);
         [OperationContract]
         [WebGet(ResponseFormat = WebMessageFormat.Json)]
         GenericServiceResponse<List<Resource>> GetResourceList(string entryId);
+        [OperationContract]
+        [WebInvoke(ResponseFormat = WebMessageFormat.Json)]
+        ServiceResponse AddBrowseHistory(AddBrowseHistoryParameter parameter);
+
 
 
         [OperationContract]
@@ -75,5 +80,30 @@ namespace TracyServerPlugin
         public string TaskId { get; set; }
         [DataMember(Name = "mediaFile")]
         public MediaFile MediaFile { get; set; }
+    }
+
+    [DataContract]
+    public class BasePostParameter
+    {
+        [DataMember(Name = "sessionId")]
+        public string SessionId { get; set; }
+    }
+
+    [DataContract]
+    public class AddBrowseHistoryParameter : BasePostParameter
+    {
+        [DataMember(Name = "mediaFileId")]
+        public string MediaFileId { get; set; }
+    }
+
+    [DataContract]
+    public class UserMediaFile
+    {
+        [DataMember(Name = "mediaFile")]
+        public MediaFile MediaFile { get; set; }
+        [DataMember(Name = "isNew")]
+        public bool IsNew { get; set; }
+        [DataMember(Name = "lastBrowseDate")]
+        public DateTime LastBrowsDate { get; set; }
     }
 }

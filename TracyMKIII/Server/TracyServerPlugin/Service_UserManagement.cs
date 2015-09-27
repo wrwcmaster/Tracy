@@ -46,7 +46,6 @@ namespace TracyServerPlugin
             public string Password { get; set; }
         }
 
-        
         public GenericServiceResponse<string> Login(LoginInfo loginInfo)
         {
             TracyFacade.Instance.UserManager.Login(loginInfo.UserName, loginInfo.Password);
