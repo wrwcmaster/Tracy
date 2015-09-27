@@ -13,6 +13,10 @@ using Tracy.ResourceSource.Dmhy;
 using TracyServerPlugin;
 using Gaia.Common.Event;
 using System.ServiceModel.Description;
+using Gaia.Common.Net.Http;
+using Gaia.Common.Net.Http.RequestModifier;
+using Gaia.Common.Net.Http.ResponseParser;
+using System.Runtime.Serialization.Json;
 
 namespace TracyDownloadService
 {
@@ -25,7 +29,8 @@ namespace TracyDownloadService
     class TracyServiceClient
     {
         private ThunderAgent _thunderAgent;
-        private IService _tracyAgent;
+        private string _tracyUrl;
+        //private IService _tracyAgent;
 
         public event EventHandler<FileCompleteEventArgs> OnFileComplete;
         public event EventHandler<GenericEventArgs<ThunderOfflineDownloadTask>> OnTaskComplete;
@@ -40,16 +45,17 @@ namespace TracyDownloadService
         {
             using (var sr = new StreamReader("tracy.ini"))
             {
-                string serviceUrl = sr.ReadLine();
-                //Create uTorrent Web API client
-                CustomBinding uTorrentCustomBinding = new CustomBinding(
+                _tracyUrl = sr.ReadLine();
+
+                /*CustomBinding customBinding = new CustomBinding(
                     new WebMessageEncodingBindingElement() { ContentTypeMapper = new JsonContentTypeMapper() },
-                    new HttpTransportBindingElement() { ManualAddressing = true }
+                    new HttpTransportBindingElement() { ManualAddressing = true },
+                    
                     );
                 WebChannelFactory<IService> factory = new WebChannelFactory<IService>(new WebHttpEndpoint(ContractDescription.GetContract(typeof(IService))));
                 factory.Endpoint.Address = new EndpointAddress(serviceUrl);
-                factory.Endpoint.Binding = uTorrentCustomBinding;
-                _tracyAgent = factory.CreateChannel();
+                factory.Endpoint.Binding = customBinding;
+                _tracyAgent = factory.CreateChannel();*/
             }
         }
 
@@ -66,20 +72,38 @@ namespace TracyDownloadService
 
         public List<ThunderOfflineDownloadTask> GetDownloadTasks()
         {
-            return _tracyAgent.GetDownloadTasks().Result;
+            return HttpHelper.SendRequest(new Uri(_tracyUrl + "/GetDownloadTasks"), 
+                HttpMethod.GET, 
+                new List<IHttpRequestModifier>(),
+                new HttpResponseJSONObjectParser<GenericServiceResponse<List<ThunderOfflineDownloadTask>>>(), 
+                null).Result;
+            //return _tracyAgent.GetDownloadTasks().Result;
         }
 
         public void NotifyTaskStart(ThunderOfflineDownloadTask task)
         {
-            _tracyAgent.NotifyTaskStart(task);
+            HttpHelper.SendRequest(new Uri(_tracyUrl + "/NotifyTaskStart"),
+                HttpMethod.POST,
+                new List<IHttpRequestModifier>() { new HttpRequestJSONModifier<ThunderOfflineDownloadTask>(task) },
+                null).GetResponse();
+            //_tracyAgent.NotifyTaskStart(task);
         }
         public void NotifyTaskComplete(string taskId)
         {
-            _tracyAgent.NotifyTaskComplete(taskId);
+            HttpHelper.SendRequest(new Uri(_tracyUrl + "/NotifyTaskComplete"),
+                HttpMethod.POST,
+                new List<IHttpRequestModifier>() { new HttpRequestJSONModifier<string>(taskId) },
+                null).GetResponse();
+            //_tracyAgent.NotifyTaskComplete(taskId);
         }
         public void NotifyFileDownloadComplete(string taskId, MediaFile file)
         {
-            _tracyAgent.NotifyFileDownloadComplete(new NotifyFileDownloadCompleteParameter() { TaskId = taskId, MediaFile = file });
+            NotifyFileDownloadCompleteParameter param = new NotifyFileDownloadCompleteParameter() { TaskId = taskId, MediaFile = file };
+            HttpHelper.SendRequest(new Uri(_tracyUrl + "/NotifyFileDownloadComplete"),
+                HttpMethod.POST,
+                new List<IHttpRequestModifier>() { new HttpRequestJSONModifier<NotifyFileDownloadCompleteParameter>(param) },
+                null).GetResponse();
+            //_tracyAgent.NotifyFileDownloadComplete(new NotifyFileDownloadCompleteParameter() { TaskId = taskId, MediaFile = file });
         }
 
         public void StartTask(ThunderOfflineDownloadTask task)
@@ -102,8 +126,23 @@ namespace TracyDownloadService
                 var urlQueryResponse = _thunderAgent.QueryUrl(res.Link);
                 Console.WriteLine(urlQueryResponse.Title);
                 cid = urlQueryResponse.Cid;
-                System.Threading.Thread.Sleep(1000);
-                commitResponse = _thunderAgent.CommitBtTask(urlQueryResponse.Cid, urlQueryResponse.GetIndexArray());
+                for(int i = 1; i <= 5; i++) //TODO: move to common logic
+                {
+                    try
+                    {
+                        System.Threading.Thread.Sleep(1000 * i);
+                        commitResponse = _thunderAgent.CommitBtTask(urlQueryResponse.Cid, urlQueryResponse.GetIndexArray());
+                        break;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Failed to Commit BT Task (Attemp " + i + ") - " + ex.Message);
+                        if (i == 3)
+                        {
+                            throw;
+                        }
+                    }
+                }
             }
 
             task.Cid = cid;
@@ -132,10 +171,10 @@ namespace TracyDownloadService
                         FileName = remoteFile.FileName,
                         Size = Convert.ToInt64(remoteFile.Size),
                         CreateDate = DateTime.UtcNow,
-                        LastSharedDate = DateTime.MinValue,
                         Type = "Thunder",
                         Status = 1,
                         CompleteDate = DateTime.UtcNow,
+                        LastSharedDate = DateTime.MinValue.ToUniversalTime(),
                         PrivateUrl = remoteFile.Url //thunderUrl
                     };
                     OnFileComplete.SafeInvoke(this, new FileCompleteEventArgs() { File = mediaFile, Task = task});

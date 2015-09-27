@@ -60,13 +60,13 @@ namespace TracyServerPlugin
         GenericServiceResponse<string> Test();
 
         [OperationContract]
-        [WebInvoke(ResponseFormat = WebMessageFormat.Json)]
+        [WebInvoke(ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json, UriTemplate = "/NotifyTaskStart")]
         ServiceResponse NotifyTaskStart(ThunderOfflineDownloadTask task);
         [OperationContract]
         [WebInvoke(ResponseFormat = WebMessageFormat.Json)]
         ServiceResponse NotifyTaskComplete(string taskId);
         [OperationContract]
-        [WebInvoke(ResponseFormat = WebMessageFormat.Json)]
+        [WebInvoke(ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json)]
         ServiceResponse NotifyFileDownloadComplete(NotifyFileDownloadCompleteParameter param);
         [OperationContract]
         [WebGet(ResponseFormat = WebMessageFormat.Json)]
