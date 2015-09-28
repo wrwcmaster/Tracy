@@ -7,13 +7,13 @@ var request = require('request');
 /* GET resources page. */
 router.get('/list/:entryId/:entryName', function(req, res, next) {
     
-    request('http://localhost:8801/GetMediaFileList?entryId=' + req.params.entryId, function (error, response, body) {
+    request('http://localhost:8801/GetMediaFileList?entryId=' + req.params.entryId + '&sessionId=' + req.cookies.sessionId, function (error, response, body) {
         if (!error && response.statusCode == 200) {
             var fileData = JSON.parse(body);
             request('http://localhost:8801/GetResourceList?entryId=' + req.params.entryId, function (error, response, body) {
                 if (!error && response.statusCode == 200) {
                     var resData = JSON.parse(body);
-                    res.render('resources', { entryId: req.params.entryId, title: req.params.entryName, resources: resData.result, mediaFiles: fileData.result });
+                    res.render('resources', { entryId: req.params.entryId, title: req.params.entryName, resources: resData.result, userMediaFiles: fileData.result });
                 }
             });
         }
@@ -72,7 +72,7 @@ router.post('/offlineDownload', function(req, res, next) {
 });
 
 router.get('/download/:mediaFileId', function(req, res, next) {
-    request('http://localhost:8801/GetDownloadUrl?mediaFileId=' + req.params.mediaFileId, function (error, response, body) {
+    request('http://localhost:8801/GetDownloadUrl?mediaFileId=' + req.params.mediaFileId + '&sessionId=' + req.cookies.sessionId, function (error, response, body) {
         if (!error && response.statusCode == 200) {
             var url = JSON.parse(body);
             res.redirect(url.result);

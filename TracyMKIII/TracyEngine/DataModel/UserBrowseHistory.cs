@@ -11,6 +11,7 @@ namespace Tracy.DataModel
     {
         public ObjectId UserId { get; set; }
         public ObjectId MediaFileId { get; set; }
-        public DateTime BrowseDate { get; set; }
+        public DateTime LastBrowseDate { get; set; }
+        public int BrowseCount { get; set; }
     }
 }

@@ -135,13 +135,14 @@ namespace TracyServerPlugin
                         MediaFile file = TracyFacade.Instance.Manager.MediaFileProvider.Collection.FindOneById(fileId);
                         if (file != null)
                         {
-                            var userFile = new UserMediaFile() { MediaFile = file, IsNew = true };
+                            var userFile = new UserMediaFile() { MediaFile = file, IsNew = true, LastBrowsDate = DateTime.MinValue.ToUniversalTime() };
                             var history = TracyFacade.Instance.Manager.UserBrowseHistoryProvider.GetBrowseHistory(user.Id, file.Id);
                             if(history != null)
                             {
                                 userFile.IsNew = false;
-                                userFile.LastBrowsDate = history.BrowseDate;
+                                userFile.LastBrowsDate = history.LastBrowseDate;
                             }
+                            userFile.TotalBrowseCount = TracyFacade.Instance.Manager.UserBrowseHistoryProvider.GetBrowseCount(file.Id);
                             rtn.Add(userFile);
                         }
                     }
@@ -157,16 +158,24 @@ namespace TracyServerPlugin
                 var user = TracyFacade.Instance.UserManager.GetCurrentUser();
                 if (user != null)
                 {
-                    TracyFacade.Instance.Manager.UserBrowseHistoryProvider.AddBrowseHistory(user.Id, new ObjectId(parameter.MediaFileId), DateTime.UtcNow);
+                    TracyFacade.Instance.Manager.UserBrowseHistoryProvider.LogBrowseHistory(user.Id, new ObjectId(parameter.MediaFileId), DateTime.UtcNow);
                 }
             });
         }
 
 
-        public GenericServiceResponse<string> GetDownloadUrl(string mediaFileId)
+        public GenericServiceResponse<string> GetDownloadUrl(string sessionId, string mediaFileId)
         {
-            var file = TracyFacade.Instance.Manager.MediaFileProvider.Collection.FindOneById(new ObjectId(mediaFileId));
-            return new GenericServiceResponse<string>(TracyFacade.Instance.Manager.GetSharedUrl(file));
+            return HandleRequest<GenericServiceResponse<string>>(sessionId, (response) =>
+            {
+                var user = TracyFacade.Instance.UserManager.GetCurrentUser();
+                if (user != null)
+                {
+                    var file = TracyFacade.Instance.Manager.MediaFileProvider.Collection.FindOneById(new ObjectId(mediaFileId));
+                    response.Result = TracyFacade.Instance.Manager.GetSharedUrl(file);
+                    TracyFacade.Instance.Manager.UserBrowseHistoryProvider.LogBrowseHistory(user.Id, new ObjectId(mediaFileId), DateTime.UtcNow);
+                }
+            });
         }
 
         

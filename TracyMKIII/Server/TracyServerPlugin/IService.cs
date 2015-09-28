@@ -25,7 +25,7 @@ namespace TracyServerPlugin
         
         [OperationContract]
         [WebGet(ResponseFormat = WebMessageFormat.Json)]
-        GenericServiceResponse<string> GetDownloadUrl(string mediaFileId);
+        GenericServiceResponse<string> GetDownloadUrl(string sessionId, string mediaFileId);
         [OperationContract]
         [WebGet(ResponseFormat = WebMessageFormat.Json)]
         GenericServiceResponse<List<Entry>> GetEntryList(string sessionId);
@@ -105,5 +105,7 @@ namespace TracyServerPlugin
         public bool IsNew { get; set; }
         [DataMember(Name = "lastBrowseDate")]
         public DateTime LastBrowsDate { get; set; }
+        [DataMember(Name = "totalBrowseCount")]
+        public int TotalBrowseCount { get; set; }
     }
 }
