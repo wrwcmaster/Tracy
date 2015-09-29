@@ -178,7 +178,18 @@ namespace TracyServerPlugin
             });
         }
 
-        
+        public ServiceResponse FollowEntry(FollowEntryParameter parameter)
+        {
+            return HandleRequest<ServiceResponse>(parameter.SessionId, (response) =>
+            {
+                var user = TracyFacade.Instance.UserManager.GetCurrentUser();
+                if (user != null)
+                {
+                    
+                }
+            });
+        }
+
         public GenericServiceResponse<string> Test()
         {
             return new GenericServiceResponse<string>(OperationContext.Current.SessionId);

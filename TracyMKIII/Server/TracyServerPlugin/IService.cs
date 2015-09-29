@@ -71,6 +71,9 @@ namespace TracyServerPlugin
         [OperationContract]
         [WebGet(ResponseFormat = WebMessageFormat.Json)]
         GenericServiceResponse<List<ThunderOfflineDownloadTask>> GetDownloadTasks();
+        [OperationContract]
+        [WebGet(ResponseFormat = WebMessageFormat.Json)]
+        ServiceResponse FollowEntry(FollowEntryParameter parameter);
     }
 
     [DataContract]
@@ -94,6 +97,15 @@ namespace TracyServerPlugin
     {
         [DataMember(Name = "mediaFileId")]
         public string MediaFileId { get; set; }
+    }
+
+    [DataContract]
+    public class FollowEntryParameter : BasePostParameter
+    {
+        [DataMember(Name = "entryId")]
+        public string EntryId { get; set; }
+        [DataMember(Name = "followFlag")]
+        public bool FollowFlag { get; set; }
     }
 
     [DataContract]
