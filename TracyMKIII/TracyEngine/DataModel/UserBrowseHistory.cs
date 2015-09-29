@@ -10,7 +10,7 @@ namespace Tracy.DataModel
     public class UserBrowseHistory : BaseMongoModel
     {
         public ObjectId UserId { get; set; }
-        public ObjectId MediaFileId { get; set; }
+        public ObjectId MediaFileId { get; set; } //TODO: support all items like entry/resource/mediafile, etc
         public DateTime LastBrowseDate { get; set; }
         public int BrowseCount { get; set; }
     }

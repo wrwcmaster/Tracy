@@ -28,6 +28,30 @@ namespace Tracy.DataModel
                 return _followedEntries;
             }
         }
+
+        public bool IsEntryFollowed(ObjectId entryId)
+        {
+            foreach (var record in FollowedEntries)
+            {
+                if (record.EntryId == entryId)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public EntryFollowRecord GetEntryFollowRecord(ObjectId entryId)
+        {
+            foreach (var record in FollowedEntries)
+            {
+                if (record.EntryId == entryId)
+                {
+                    return record;
+                }
+            }
+            return null;
+        }
     }
 
     public class EntryFollowRecord
@@ -36,4 +60,6 @@ namespace Tracy.DataModel
         public DateTime FollowDate { get; set; }
         public bool IsActive { get; set; }
     }
+
+    
 }

@@ -40,6 +40,12 @@ namespace Tracy
             get { return _userBrowseHistoryProvider; }
         }
 
+        private UserProfileProvider _userProfileProvider;
+        public UserProfileProvider UserProfileProvider
+        {
+            get { return _userProfileProvider; }
+        }
+
         private ThunderOfflineDownloadManager _downloadManager;
         public ThunderOfflineDownloadManager DownloadManager
         {
@@ -53,6 +59,7 @@ namespace Tracy
             _resourceProvider = new ResourceProvider(database);
             _mediaFileProvider = new MediaFileProvider(database);
             _userBrowseHistoryProvider = new UserBrowseHistoryProvider(database);
+            _userProfileProvider = new UserProfileProvider(database);
 
             _dmhySource = new DmhyResourceSource(_resourceProvider);
             _dmhySource.OnResourcesFound += DmhySource_OnResourcesFound;

@@ -28,7 +28,7 @@ namespace TracyServerPlugin
         GenericServiceResponse<string> GetDownloadUrl(string sessionId, string mediaFileId);
         [OperationContract]
         [WebGet(ResponseFormat = WebMessageFormat.Json)]
-        GenericServiceResponse<List<Entry>> GetEntryList(string sessionId);
+        GenericServiceResponse<List<EntryViewModel>> GetEntryList(string sessionId);
         [OperationContract]
         [WebGet(ResponseFormat = WebMessageFormat.Json)]
         GenericServiceResponse<List<UserMediaFile>> GetMediaFileList(string sessionId, string entryId);
@@ -119,5 +119,18 @@ namespace TracyServerPlugin
         public DateTime LastBrowsDate { get; set; }
         [DataMember(Name = "totalBrowseCount")]
         public int TotalBrowseCount { get; set; }
+    }
+
+    [DataContract]
+    public class EntryViewModel
+    {
+        [DataMember(Name = "entry")]
+        public Entry Entry { get; set; }
+        [DataMember(Name = "followDate")]
+        public DateTime FollowDate { get; set; }
+        [DataMember(Name = "isFollowed")]
+        public bool IsFollowed { get; set; }
+        [DataMember(Name = "totalFollowedCount")]
+        public long TotalFollowedCount { get; set; }
     }
 }

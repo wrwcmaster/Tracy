@@ -70,11 +70,26 @@ namespace TracyServerPlugin
         }
 
         
-        public GenericServiceResponse<List<Entry>> GetEntryList(string sessionId)
+        public GenericServiceResponse<List<EntryViewModel>> GetEntryList(string sessionId)
         {
-            return HandleRequest<GenericServiceResponse<List<Entry>>>(sessionId, (response) =>
+            return HandleRequest<GenericServiceResponse<List<EntryViewModel>>>(sessionId, (response) =>
             {
-                response.Result = TracyFacade.Instance.Manager.EntryProvider.Collection.FindAll().ToList();
+                var user = TracyFacade.Instance.UserManager.GetCurrentUser();
+                if (user != null)
+                {
+                    var profile = TracyFacade.Instance.Manager.UserProfileProvider.GetUserProfileByUserId(user.Id);
+                    var rtn = new List<EntryViewModel>();
+                    var entries = TracyFacade.Instance.Manager.EntryProvider.Collection.FindAll().ToList();
+                    foreach(var entry in entries)
+                    {
+                        var viewModel = new EntryViewModel() { Entry = entry };
+                        var followRecord = profile.GetEntryFollowRecord(entry.Id);
+                        viewModel.IsFollowed = (followRecord != null);
+                        viewModel.FollowDate = (followRecord != null) ? followRecord.FollowDate : DateTime.MinValue.ToUniversalTime();
+                        viewModel.TotalFollowedCount = TracyFacade.Instance.Manager.UserProfileProvider.GetFollowCount(entry.Id);
+                    }
+                    response.Result = rtn;
+                }
             });
         }
 
@@ -185,7 +200,14 @@ namespace TracyServerPlugin
                 var user = TracyFacade.Instance.UserManager.GetCurrentUser();
                 if (user != null)
                 {
-                    
+                    if (parameter.FollowFlag)
+                    {
+                        TracyFacade.Instance.Manager.UserProfileProvider.FollowEntry(user.Id, new ObjectId(parameter.EntryId), DateTime.UtcNow);
+                    }
+                    else
+                    {
+                        TracyFacade.Instance.Manager.UserProfileProvider.UnfollowEntry(user.Id, new ObjectId(parameter.EntryId));
+                    }
                 }
             });
         }
