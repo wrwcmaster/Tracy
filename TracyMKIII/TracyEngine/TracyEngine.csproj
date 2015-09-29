@@ -54,11 +54,13 @@
     <Compile Include="DataAccess\AbstractMongoDataProvider.cs" />
     <Compile Include="DataAccess\ThunderOfflineDownloadTaskProvider.cs" />
     <Compile Include="DataAccess\TracyDB.cs" />
+    <Compile Include="DataAccess\UserProfileProvider.cs" />
     <Compile Include="DataAccess\UserBrowseHistoryProvider.cs" />
     <Compile Include="DataAccess\UserProvider.cs" />
     <Compile Include="DataModel\BaseMongoModel.cs" />
     <Compile Include="DataModel\ThunderOfflineDownloadTask.cs" />
     <Compile Include="DataModel\User.cs" />
+    <Compile Include="DataModel\UserProfile.cs" />
     <Compile Include="DataModel\UserBrowseHistory.cs" />
     <Compile Include="SessionManager.cs" />
     <Compile Include="ThunderOfflineDownloadManager.cs" />
