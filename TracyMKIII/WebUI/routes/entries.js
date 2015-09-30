@@ -36,4 +36,21 @@ router.post('/add', function(req, res, next) {
     });
 });
 
+router.post('/follow', function(req, res, next) {
+    console.log('entries/follow');
+    console.log(req.body);
+    res.set('Content-Type', 'application/json');
+    req.body.sessionId = req.cookies.sessionId;
+    request({
+        method: 'POST',
+        url: 'http://localhost:8801/FollowEntry',
+        json: req.body
+    }, function (error, response, body) {
+        var rtn = {};
+        rtn.errorCode = 0;
+        rtn.entry = body;
+        res.send(rtn);
+    });
+});
+
 module.exports = router;

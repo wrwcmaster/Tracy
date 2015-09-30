@@ -10,7 +10,6 @@ namespace Tracy.DataModel
 {
     public class UserProfile : BaseMongoModel
     {
-        public ObjectId UserProfileId { get; set; }
         public ObjectId UserId { get; set; }
 
         [BsonElement("FollowedEntries")]

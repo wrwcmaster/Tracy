@@ -72,7 +72,7 @@ namespace TracyServerPlugin
         [WebGet(ResponseFormat = WebMessageFormat.Json)]
         GenericServiceResponse<List<ThunderOfflineDownloadTask>> GetDownloadTasks();
         [OperationContract]
-        [WebGet(ResponseFormat = WebMessageFormat.Json)]
+        [WebInvoke(ResponseFormat = WebMessageFormat.Json)]
         ServiceResponse FollowEntry(FollowEntryParameter parameter);
     }
 

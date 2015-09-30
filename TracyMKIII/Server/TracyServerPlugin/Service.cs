@@ -83,11 +83,16 @@ namespace TracyServerPlugin
                     foreach(var entry in entries)
                     {
                         var viewModel = new EntryViewModel() { Entry = entry };
-                        var followRecord = profile.GetEntryFollowRecord(entry.Id);
-                        viewModel.IsFollowed = (followRecord != null);
-                        viewModel.FollowDate = (followRecord != null) ? followRecord.FollowDate : DateTime.MinValue.ToUniversalTime();
+                        var followRecord = profile == null ? null : profile.GetEntryFollowRecord(entry.Id);
+                        viewModel.IsFollowed = followRecord != null && followRecord.IsActive;
+                        viewModel.FollowDate = viewModel.IsFollowed ? followRecord.FollowDate : DateTime.MinValue.ToUniversalTime();
                         viewModel.TotalFollowedCount = TracyFacade.Instance.Manager.UserProfileProvider.GetFollowCount(entry.Id);
+                        rtn.Add(viewModel);
                     }
+                    rtn.Sort(Comparer<EntryViewModel>.Create((model1, model2) =>
+                    {
+                        return -model1.FollowDate.CompareTo(model2.FollowDate); //Sort by follow date desc
+                    }));
                     response.Result = rtn;
                 }
             });

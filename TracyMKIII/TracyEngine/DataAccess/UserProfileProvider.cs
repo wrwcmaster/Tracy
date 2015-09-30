@@ -32,7 +32,7 @@ namespace Tracy.DataAccess
             var profile = TracyFacade.Instance.Manager.UserProfileProvider.GetUserProfileByUserId(userId);
             if (profile == null)
             {
-                profile = new UserProfile();
+                profile = new UserProfile() { UserId = userId };
             }
             var record = profile.GetEntryFollowRecord(entryId);
             if (record == null)
@@ -42,14 +42,8 @@ namespace Tracy.DataAccess
             }
             record.FollowDate = followDate;
             record.IsActive = true;
-            if (profile.Id == null)
-            {
-                TracyFacade.Instance.Manager.UserBrowseHistoryProvider.Collection.Insert(profile);
-            }
-            else
-            {
-                TracyFacade.Instance.Manager.UserBrowseHistoryProvider.Collection.Save(profile);
-            }
+            
+            TracyFacade.Instance.Manager.UserProfileProvider.Collection.Save(profile);
         }
 
         public void UnfollowEntry(ObjectId userId, ObjectId entryId)
@@ -65,12 +59,19 @@ namespace Tracy.DataAccess
                 return;
             }
             record.IsActive = false;
-            TracyFacade.Instance.Manager.UserBrowseHistoryProvider.Collection.Save(profile);
+            TracyFacade.Instance.Manager.UserProfileProvider.Collection.Save(profile);
         }
 
         public long GetFollowCount(ObjectId entryId)
         {
-            return Collection.Count(Query.EQ("FollowedEntries.EntryId", entryId));
+            return Collection.Count(
+                Query.ElemMatch("FollowedEntries", 
+                    Query.And(
+                        Query.EQ("EntryId", entryId), 
+                        Query.EQ("IsActive", true)
+                    )
+                )
+            );
         }
     }
 }

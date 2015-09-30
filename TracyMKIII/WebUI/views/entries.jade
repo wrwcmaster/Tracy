@@ -5,11 +5,18 @@ block header
     
 block content
     ul(data-role= 'listview')
-        each entry in entries
+        each entryViewModel in entries
+            - var entry = entryViewModel.entry
             li
                 a(href= 'resources/list/' + entry.id + '/' + entry.name)
                     h2= entry.name
-    
+                div.ui-li-aside(data-role= 'controlgroup' data-type= 'horizontal')
+                    - var followText = (entryViewModel.isFollowed ? 'Unfollow' : 'Follow') + ' (' + entryViewModel.totalFollowedCount + ')'
+                    if entryViewModel.isFollowed
+                        a.ui-btn.ui-mini.ui-btn-b(href= 'javascript:follow("' + entry.id + '", false)')= followText
+                    else
+                        a.ui-btn.ui-mini(href= 'javascript:follow("' + entry.id + '", true)')= followText
+                
     div(data-role= 'popup', id= 'entryAddDialog' class= 'ui-content')
         form(id= 'entryAddForm', action='/entries/add', method= 'post')
             h3 Please Input Entry Information
@@ -56,5 +63,13 @@ block clientScript
                     $('#resourceCheckResult').html(htmlForTextWithEmbeddedNewlines(resultText));
                     $('#entrySubmit').prop('disabled', false);
                 }
+            });
+        }
+        
+        function follow(entryId, followFlag) {
+            var param = { "entryId": entryId, "followFlag": followFlag };
+            $.post('/entries/follow', param)
+            .done(function (data) {
+                location.reload();
             });
         }
