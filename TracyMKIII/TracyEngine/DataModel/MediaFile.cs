@@ -1,10 +1,12 @@
 ﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace Tracy.DataModel
 {
@@ -38,6 +40,22 @@ namespace Tracy.DataModel
 
         [DataMember(Name = "status")]
         public int Status { get; set; }
+
+        [DataMember(Name = "episode")]
+        [BsonIgnore]
+        public int? Episode {
+            get
+            {
+                if (string.IsNullOrEmpty(FileName)) return null;
+                var regexpr = new Regex(@"\[(\d+)\]");
+                var match = regexpr.Match(FileName);
+                if (match.Success)
+                {
+                    return int.Parse(match.Groups[1].Value);
+                }
+                return null;
+            }
+        }
 
         public ObjectId ResourceId
         {

@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Tracy.DataModel;
 
+
 namespace Tracy.DataAccess
 {
     public class MediaFileProvider : AbstractMongoDataProvider<MediaFile>
@@ -20,5 +21,6 @@ namespace Tracy.DataAccess
         }
 
         public MediaFileProvider(MongoDB db) : base(db) { }
+
     }
 }
