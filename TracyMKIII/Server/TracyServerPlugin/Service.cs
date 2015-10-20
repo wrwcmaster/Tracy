@@ -217,12 +217,13 @@ namespace TracyServerPlugin
             });
         }
 
-        public GenericServiceResponse<string> Test()
+        public GenericServiceResponse<MediaFile> Test()
         {
-            return new GenericServiceResponse<string>(OperationContext.Current.SessionId);
+            var file = new MediaFile() { FileName = "[KTXP][Aldnoah.Zero][15][GB][720p].mp4", Size = 0, Status = 0, Id = ObjectId.Empty, LastSharedDate = DateTime.Now, CompleteDate = DateTime.Now, CreateDate = DateTime.Now };
+            return new GenericServiceResponse<MediaFile>(file);
             /*var result = TracyFacade.Instance.Manager.DownloadManager.Test();
             return new GenericServiceResponse<string>(result);*/
-            
+
             /*var cookie = WebOperationContext.Current.IncomingRequest.Headers.Get("Cookie");
             if (String.IsNullOrEmpty(cookie) || cookie.IndexOf("session=") < 0)
             {
@@ -234,7 +235,7 @@ namespace TracyServerPlugin
             var rtn = TracyFacade.Instance.Manager.DownloadManager.TransportToBaiduPan("http://vod29.c12.lixian.vip.xunlei.com/download?fid=qgSQ/XKp21phgaeep7CK3fvHVbJgH+wAAAAAAAJJUb+IZNuFSN3MnNoTqRM7arVQ&mid=666&threshold=150&tid=18408D52ACAB564BC1F04357B664554E&srcid=4&verno=1&g=024951BF8864DB8548DDCC9CDA13A9133B6AB550&scn=c12&i=2F32F2C36990A9468D5FC59E58B71F2D356110F3&t=6&ui=425641022&ti=1062263630599744&s=15474528&m=0&n=013A66A90C55425D5B36508F3E6B6F2D7A005A81025B31315D3A76A6004A505D5B5603D40F5D2E6D705531E45F00000000&ih=2F32F2C36990A9468D5FC59E58B71F2D356110F3&fi=0&pi=1062263630534144&ff=0&co=5A9C4451DFB665FD1D2307FA8DBEDC35&cm=1&pk=lixian&ak=1:1:6:4&e=1450028022&ms=10485760&ck=AD53752A14DD905BF5070C45424E5A27&at=A4E8874DAD1826FECBDCCC55FEEF9D4A&k=1&ts=1442252035", "test1.mp4");
             var end = DateTime.Now;
             return new GenericServiceResponse<string>(rtn + " " + (end - start).TotalMilliseconds + "ms");*/
-            
+
         }
 
         public GenericServiceResponse<List<ThunderOfflineDownloadTask>> GetDownloadTasks()

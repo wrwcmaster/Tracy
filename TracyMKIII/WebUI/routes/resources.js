@@ -6,20 +6,64 @@ var request = require('request');
 
 /* GET resources page. */
 router.get('/list/:entryId/:entryName', function(req, res, next) {
-    
     request('http://localhost:8801/GetMediaFileList?entryId=' + req.params.entryId + '&sessionId=' + req.cookies.sessionId, function (error, response, body) {
         if (!error && response.statusCode == 200) {
             var fileData = JSON.parse(body);
+            var fileList = processMediaFiles(fileData.result);
             request('http://localhost:8801/GetResourceList?entryId=' + req.params.entryId, function (error, response, body) {
                 if (!error && response.statusCode == 200) {
                     var resData = JSON.parse(body);
-                    res.render('resources', { entryId: req.params.entryId, title: req.params.entryName, resources: resData.result, userMediaFiles: fileData.result });
+                    res.render('resources', { entryId: req.params.entryId, title: req.params.entryName, resources: resData.result, userMediaFiles: fileList });
                 }
             });
         }
     });
-    
 });
+
+function processMediaFiles(rawFiles){
+    var dict = {};
+    //convert to dict, use episode as key
+    rawFiles.forEach(function (rawFile) {
+        var key = (rawFile.mediaFile.episode != null) ? rawFile.mediaFile.episode : 'other';
+        var list = dict[key];
+        if (!list) {
+            list = [];
+            dict[key] = list;
+        }
+        list.push(rawFile);
+    }, this);
+    
+    //sort by episode
+    var keyList = Object.keys(dict);
+    keyList.sort();
+    
+    //convert to list
+    var rtn = [];
+    var firstNewFlag = true;
+    keyList.forEach(function (key) {
+        var files = dict[key];
+        //if all sub items are new, this episode has new flag
+        var isNew = true;
+        for (var i = 0; i < files.length; i++) {
+            if (!files[i].isNew) {
+                isNew = false;
+                break;
+            }
+        }
+        var willExpand = false;
+        if (isNew && firstNewFlag) {
+            firstNewFlag = false;
+            willExpand = true;
+        }
+        rtn.push({ 
+            episode: key, 
+            files: files,
+            isNew: isNew,
+            willExpand: willExpand 
+        });
+    });
+    return rtn;
+}
 
 /* API */
 router.post('/validateEntry', function(req, res, next) {

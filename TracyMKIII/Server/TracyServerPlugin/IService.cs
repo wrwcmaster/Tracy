@@ -55,9 +55,6 @@ namespace TracyServerPlugin
         [OperationContract]
         [WebGet(ResponseFormat = WebMessageFormat.Json)]
         ServiceResponse Sync(string startPage);
-        [OperationContract]
-        [WebGet(ResponseFormat = WebMessageFormat.Json)]
-        GenericServiceResponse<string> Test();
 
         [OperationContract]
         [WebInvoke(ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json, UriTemplate = "/NotifyTaskStart")]
@@ -74,6 +71,10 @@ namespace TracyServerPlugin
         [OperationContract]
         [WebInvoke(ResponseFormat = WebMessageFormat.Json)]
         ServiceResponse FollowEntry(FollowEntryParameter parameter);
+
+        [OperationContract]
+        [WebGet(ResponseFormat = WebMessageFormat.Json)]
+        GenericServiceResponse<MediaFile> Test();
     }
 
     [DataContract]

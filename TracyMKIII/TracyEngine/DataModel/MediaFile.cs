@@ -43,18 +43,29 @@ namespace Tracy.DataModel
 
         [DataMember(Name = "episode")]
         [BsonIgnore]
-        public int? Episode {
+        public int? Episode
+        {
             get
             {
                 if (string.IsNullOrEmpty(FileName)) return null;
-                var regexpr = new Regex(@"\[(\d+)\]");
-                var match = regexpr.Match(FileName);
-                if (match.Success)
+                var exprList = new string[] 
                 {
-                    return int.Parse(match.Groups[1].Value);
+                    @"\[(\d+)([vV]\d)?\]",
+                    @"第(\d+)话",
+                    @"\s(\d\d+)\s"
+                };
+                foreach(var expr in exprList)
+                {
+                    var regexpr = new Regex(expr);
+                    var match = regexpr.Match(FileName);
+                    if (match.Success)
+                    {
+                        return int.Parse(match.Groups[1].Value);
+                    }
                 }
                 return null;
             }
+            set { }
         }
 
         public ObjectId ResourceId

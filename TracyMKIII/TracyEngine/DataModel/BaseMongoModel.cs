@@ -23,7 +23,7 @@ namespace Tracy.DataModel
             }
             set
             {
-                
+                Id = new ObjectId(value);
             }
         }
     }

@@ -3,14 +3,20 @@ extends layout
 block content
     ul(data-role= 'listview')
         li(data-role= 'list-divider') Offline Downloaded Files
-        each userMediaFile in userMediaFiles
-            - var mediaFile = userMediaFile.mediaFile
-            li(data-icon= 'arrow-d')
-                a(rel= 'external', target= '_blank' href= '/resources/download/' + mediaFile['id'])
-                    h2= mediaFile.fileName
-                    if userMediaFile.isNew
-                        h2.ui-li-aside New!
-                    p= ' ' + userMediaFile.totalBrowseCount + ' Download(s)'
+        each episode in userMediaFiles
+            li(data-role= 'collapsible' data-iconpos= 'right' data-inset='false' data-collapsed= episode.willExpand ? 'false' : 'true')
+                - var episodeTitle = 'Episode ' + episode.episode
+                - episodeTitle = episode.isNew ? episodeTitle + ' - New!' : episodeTitle
+                h3= episodeTitle
+                ul(data-role= 'listview')
+                    each userMediaFile in episode.files
+                        - var mediaFile = userMediaFile.mediaFile
+                        li(data-icon= 'arrow-d')
+                            a(rel= 'external', target= '_blank' href= '/resources/download/' + mediaFile['id'])
+                                h2= mediaFile.fileName
+                                if userMediaFile.isNew
+                                    h2.ui-li-aside New!
+                                p= ' ' + userMediaFile.totalBrowseCount + ' Download(s)'
                         
         li(data-role= 'list-divider') Magnet Resources
         each resource in resources
