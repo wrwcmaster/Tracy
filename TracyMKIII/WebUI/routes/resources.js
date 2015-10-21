@@ -35,7 +35,9 @@ function processMediaFiles(rawFiles){
     
     //sort by episode
     var keyList = Object.keys(dict);
-    keyList.sort();
+    keyList.sort(function (a, b) {
+        return parseInt(a) - parseInt(b);
+    });
     
     //convert to list
     var rtn = [];
