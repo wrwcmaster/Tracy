@@ -190,9 +190,7 @@ namespace Tracy
                     }
 
                     TracyFacade.Instance.Manager.MediaFileProvider.Collection.Insert(mediaFile);
-                    //Link to entry
-                    entry.MediaFileIds.Add(mediaFile.Id);
-                    TracyFacade.Instance.Manager.EntryProvider.Collection.Save(entry);
+                    TracyFacade.Instance.Manager.EntryProvider.LinkMediaFile(entry, mediaFile, true);
                 }
             }
 

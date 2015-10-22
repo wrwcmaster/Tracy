@@ -178,7 +178,8 @@ namespace TracyServerPlugin
                 var user = TracyFacade.Instance.UserManager.GetCurrentUser();
                 if (user != null)
                 {
-                    TracyFacade.Instance.Manager.UserBrowseHistoryProvider.LogBrowseHistory(user.Id, new ObjectId(parameter.MediaFileId), DateTime.UtcNow);
+                    var file = TracyFacade.Instance.Manager.MediaFileProvider.Collection.FindOneById(new ObjectId(parameter.MediaFileId));
+                    TracyFacade.Instance.Manager.UserBrowseHistoryProvider.LogBrowseHistory(user.Id, file, DateTime.UtcNow);
                 }
             });
         }
@@ -193,7 +194,7 @@ namespace TracyServerPlugin
                 {
                     var file = TracyFacade.Instance.Manager.MediaFileProvider.Collection.FindOneById(new ObjectId(mediaFileId));
                     response.Result = TracyFacade.Instance.Manager.GetSharedUrl(file);
-                    TracyFacade.Instance.Manager.UserBrowseHistoryProvider.LogBrowseHistory(user.Id, new ObjectId(mediaFileId), DateTime.UtcNow);
+                    TracyFacade.Instance.Manager.UserBrowseHistoryProvider.LogBrowseHistory(user.Id, file, DateTime.UtcNow);
                 }
             });
         }
@@ -282,8 +283,7 @@ namespace TracyServerPlugin
                     TracyFacade.Instance.Manager.MediaFileProvider.Collection.Insert(parameter.MediaFile);
                     //Link to entry
                     var entry = TracyFacade.Instance.Manager.EntryProvider.Collection.FindOneById(task.EntryId);
-                    entry.MediaFileIds.Add(parameter.MediaFile.Id);
-                    TracyFacade.Instance.Manager.EntryProvider.Collection.Save(entry);
+                    TracyFacade.Instance.Manager.EntryProvider.LinkMediaFile(entry, parameter.MediaFile, true);
                     Console.WriteLine(string.Format("File {0} added to entry {1}", parameter.MediaFile.FileName, entry.Name));
                 }
             }

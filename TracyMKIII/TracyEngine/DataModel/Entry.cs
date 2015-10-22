@@ -56,6 +56,12 @@ namespace Tracy.DataModel
             }
         }
 
+        [DataMember(Name = "maxEpisode")]
+        public int? MaxEpisode
+        {
+            get; set;
+        }
+
         public bool IsTitleMatched(string title)
         {
             if (string.IsNullOrEmpty(RegExpr))

@@ -22,9 +22,9 @@ namespace Tracy.DataAccess
 
         public UserBrowseHistoryProvider(MongoDB db) : base(db) { }
 
-        public void LogBrowseHistory(ObjectId userId, ObjectId mediaFileId, DateTime browseDate)
+        public void LogBrowseHistory(ObjectId userId, MediaFile mediaFile, DateTime browseDate)
         {
-            var existingHistory = GetBrowseHistory(userId, mediaFileId);
+            var existingHistory = GetBrowseHistory(userId, mediaFile.Id);
             if( existingHistory != null)
             {
                 existingHistory.LastBrowseDate = browseDate;
@@ -33,9 +33,16 @@ namespace Tracy.DataAccess
             }
             else
             {
-                var newHistory = new UserBrowseHistory() { UserId = userId, MediaFileId = mediaFileId, LastBrowseDate = browseDate, BrowseCount = 1 };
+                var newHistory = new UserBrowseHistory() { UserId = userId, MediaFileId = mediaFile.Id, LastBrowseDate = browseDate, BrowseCount = 1 };
                 Collection.Insert(newHistory);
             }
+
+            //TODO: update user profile for max browsed episode of the entry
+            /*var profile = TracyFacade.Instance.Manager.UserProfileProvider.GetUserProfileByUserId(userId);
+            if(profile != null)
+            {
+                profile.GetEntryFollowRecord(entryId)
+            }*/
         }
 
         public UserBrowseHistory GetBrowseHistory(ObjectId userId, ObjectId mediaFileId)

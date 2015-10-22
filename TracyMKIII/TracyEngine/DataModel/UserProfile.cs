@@ -57,6 +57,7 @@ namespace Tracy.DataModel
     {
         public ObjectId EntryId { get; set; }
         public DateTime FollowDate { get; set; }
+        public int? MaxBrowsedEpisode { get; set; }
         public bool IsActive { get; set; }
     }
 

@@ -20,5 +20,16 @@ namespace Tracy.DataAccess
         }
 
         public EntryProvider(MongoDB db) : base(db) { }
+
+        public void LinkMediaFile(Entry entry, MediaFile mediaFile, bool willSaveEntry)
+        {
+            if (entry == null) return;
+            entry.MediaFileIds.Add(mediaFile.Id);
+            if(!entry.MaxEpisode.HasValue || (mediaFile.Episode.HasValue && entry.MaxEpisode < mediaFile.Episode))
+            {
+                entry.MaxEpisode = mediaFile.Episode;
+            }
+            if (willSaveEntry) TracyFacade.Instance.Manager.EntryProvider.Collection.Save(entry);
+        }
     }
 }
