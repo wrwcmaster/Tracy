@@ -23,7 +23,10 @@ router.post('/add', function(req, res, next) {
     console.log('entries/add');
     console.log(req.body);
     res.set('Content-Type', 'application/json');
-    
+    if (!req.body.searchKeywords) {
+        req.body.searchKeywords = req.body.name;
+    }
+    req.body.tracingEnabled = (req.body.tracingEnabled == 'on');
     request({
         method: 'POST',
         url: 'http://localhost:8801/AddEntry',

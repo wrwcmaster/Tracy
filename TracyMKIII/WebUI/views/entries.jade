@@ -23,6 +23,8 @@ block content
             input(type= 'text' name= 'name' id= 'entryName' value= '' placeholder= 'Entry Name')
             input(type= 'text' name= 'searchKeywords' id= 'entrySearchKeywords' value= '' placeholder= 'Search Keywords')
             input(type= 'text' name= 'regExpr' id= 'entryRegExpr' value= '' placeholder= 'Regular Expression')
+            input(type= 'checkbox' name= 'tracingEnabled' id= 'entryTracingEnabled' checked= 'checked') 
+            label(for= "entryTracingEnabled") Tracing Enabled
             a(href= 'javascript:validateEntry()' class= 'ui-btn') Check
             div
                 p(id= 'resourceCheckResult' hidden= 'true')
@@ -48,6 +50,9 @@ block clientScript
         });
         
         function validateEntry() {
+            if (!$('#entrySearchKeywords').val()) {
+                $('#entrySearchKeywords').val($('#entryName').val());
+            }
             $('#resourceCheckResult').text('Checking...');
             $('#resourceCheckResult').show();
             $.post('/resources/validateEntry', entryAddForm.serialize())
