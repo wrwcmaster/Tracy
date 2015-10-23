@@ -37,12 +37,28 @@ namespace Tracy.DataAccess
                 Collection.Insert(newHistory);
             }
 
-            //TODO: update user profile for max browsed episode of the entry
-            /*var profile = TracyFacade.Instance.Manager.UserProfileProvider.GetUserProfileByUserId(userId);
-            if(profile != null)
+            if(mediaFile.Episode != null)
             {
-                profile.GetEntryFollowRecord(entryId)
-            }*/
+                //TODO: move logic to manager level
+                //Update user profile for max browsed episode of the entry
+                var relatedEntry = TracyFacade.Instance.Manager.EntryProvider.Collection.FindOne(Query.EQ("MediaFileIds", mediaFile.Id));
+                if (relatedEntry != null)
+                {
+                    var profile = TracyFacade.Instance.Manager.UserProfileProvider.GetUserProfileByUserId(userId);
+                    if (profile != null)
+                    {
+                        var entryFollowRecord = profile.GetEntryFollowRecord(relatedEntry.Id);
+                        if (entryFollowRecord != null)
+                        {
+                            if (entryFollowRecord.MaxBrowsedEpisode == null || mediaFile.Episode > entryFollowRecord.MaxBrowsedEpisode)
+                            {
+                                entryFollowRecord.MaxBrowsedEpisode = mediaFile.Episode;
+                                TracyFacade.Instance.Manager.UserProfileProvider.Collection.Save(profile);
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         public UserBrowseHistory GetBrowseHistory(ObjectId userId, ObjectId mediaFileId)

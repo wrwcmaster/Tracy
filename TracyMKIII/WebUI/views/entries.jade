@@ -10,6 +10,11 @@ block content
             li
                 a(href= 'resources/list/' + entry.id + '/' + entry.name)
                     h2= entry.name
+                    if entryViewModel.isFollowed && entry.maxEpisode
+                        - var episodeInfo = 'Episode ' + entry.maxEpisode
+                        if !entryViewModel.maxBrowsedEpisode || entryViewModel.maxBrowsedEpisode < entry.maxEpisode
+                            - episodeInfo = episodeInfo + ' - New!'
+                        p= episodeInfo
                 div.ui-li-aside(data-role= 'controlgroup' data-type= 'horizontal')
                     - var followText = (entryViewModel.isFollowed ? 'Unfollow' : 'Follow') + ' (' + entryViewModel.totalFollowedCount + ')'
                     if entryViewModel.isFollowed

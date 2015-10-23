@@ -133,5 +133,7 @@ namespace TracyServerPlugin
         public bool IsFollowed { get; set; }
         [DataMember(Name = "totalFollowedCount")]
         public long TotalFollowedCount { get; set; }
+        [DataMember(Name = "maxBrowsedEpisode")]
+        public int? MaxBrowsedEpisode { get; set; }
     }
 }

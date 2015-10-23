@@ -87,10 +87,14 @@ namespace TracyServerPlugin
                         viewModel.IsFollowed = followRecord != null && followRecord.IsActive;
                         viewModel.FollowDate = viewModel.IsFollowed ? followRecord.FollowDate : DateTime.MinValue.ToUniversalTime();
                         viewModel.TotalFollowedCount = TracyFacade.Instance.Manager.UserProfileProvider.GetFollowCount(entry.Id);
+                        viewModel.MaxBrowsedEpisode = followRecord != null ? followRecord.MaxBrowsedEpisode : null;
                         rtn.Add(viewModel);
                     }
                     rtn.Sort(Comparer<EntryViewModel>.Create((model1, model2) =>
                     {
+                        var newFlag1 = CalcNewFlag(model1);
+                        var newFlag2 = CalcNewFlag(model2);
+                        if (newFlag1 != newFlag2) return -newFlag1.CompareTo(newFlag2);
                         return -model1.FollowDate.CompareTo(model2.FollowDate); //Sort by follow date desc
                     }));
                     response.Result = rtn;
@@ -98,7 +102,11 @@ namespace TracyServerPlugin
             });
         }
 
-        
+        private static bool CalcNewFlag(EntryViewModel model)
+        {
+            return model.IsFollowed && model.Entry.MaxEpisode != null && (model.MaxBrowsedEpisode == null || model.MaxBrowsedEpisode < model.Entry.MaxEpisode);
+        }
+
         public GenericServiceResponse<List<Resource>> GetResourceList(string entryId)
         {
             List<Resource> rtn = new List<Resource>();
