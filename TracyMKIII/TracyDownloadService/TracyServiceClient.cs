@@ -82,7 +82,7 @@ namespace TracyDownloadService
 
         public void NotifyTaskStart(ThunderOfflineDownloadTask task)
         {
-            HttpHelper.SendRequest(new Uri(_tracyUrl + "/NotifyTaskStart"),
+            HttpHelper.BuildRequest(new Uri(_tracyUrl + "/NotifyTaskStart"),
                 HttpMethod.POST,
                 new List<IHttpRequestModifier>() { new HttpRequestJSONModifier<ThunderOfflineDownloadTask>(task) },
                 null).GetResponse();
@@ -90,7 +90,7 @@ namespace TracyDownloadService
         }
         public void NotifyTaskComplete(string taskId)
         {
-            HttpHelper.SendRequest(new Uri(_tracyUrl + "/NotifyTaskComplete"),
+            HttpHelper.BuildRequest(new Uri(_tracyUrl + "/NotifyTaskComplete"),
                 HttpMethod.POST,
                 new List<IHttpRequestModifier>() { new HttpRequestJSONModifier<string>(taskId) },
                 null).GetResponse();
@@ -99,7 +99,7 @@ namespace TracyDownloadService
         public void NotifyFileDownloadComplete(string taskId, MediaFile file)
         {
             NotifyFileDownloadCompleteParameter param = new NotifyFileDownloadCompleteParameter() { TaskId = taskId, MediaFile = file };
-            HttpHelper.SendRequest(new Uri(_tracyUrl + "/NotifyFileDownloadComplete"),
+            HttpHelper.BuildRequest(new Uri(_tracyUrl + "/NotifyFileDownloadComplete"),
                 HttpMethod.POST,
                 new List<IHttpRequestModifier>() { new HttpRequestJSONModifier<NotifyFileDownloadCompleteParameter>(param) },
                 null).GetResponse();

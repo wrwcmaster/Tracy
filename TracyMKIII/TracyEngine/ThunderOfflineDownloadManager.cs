@@ -33,7 +33,6 @@ namespace Tracy
             _provider = new ThunderOfflineDownloadTaskProvider(db);
             _agent = new ThunderAgent();
             _agent.Login(userName, password);
-
             //Only for test
             _baiduAgent = new BaiduPanAgent("nA2MXZmZEwzZWV0LVBvSy1NMkIzR35wclR3dDJ5UEZWRzFRNm1UbGRadFJkUjVXQVFBQUFBJCQAAAAAAAAAAAEAAABIEo1NU2NvdHRUZXN0MDgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFHo9lVR6PZVT");
         }
