@@ -20,6 +20,11 @@ router.get('/list/:entryId/:entryName', function(req, res, next) {
     });
 });
 
+function getWeight(episode) {
+    if (episode == 'other') return -1;
+    return parseInt(episode); 
+}
+
 function processMediaFiles(rawFiles){
     var dict = {};
     //convert to dict, use episode as key
@@ -36,7 +41,7 @@ function processMediaFiles(rawFiles){
     //sort by episode
     var keyList = Object.keys(dict);
     keyList.sort(function (a, b) {
-        return parseInt(a) - parseInt(b);
+        return getWeight(a) - getWeight(b);
     });
     
     //convert to list
