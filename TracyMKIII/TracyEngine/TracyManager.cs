@@ -128,11 +128,13 @@ namespace Tracy
                         {
                             entry.ResourceIds.Add(res.Id);
                             _entryProvider.Collection.Save(entry);
-                            break; //TODO: multiple match
-                        }
 
-                        if (entry.TracingEnabled){
-                            matchedEntry = entry;
+                            if (entry.TracingEnabled)
+                            {
+                                matchedEntry = entry;
+                            }
+
+                            break; //TODO: multiple match
                         }
                     }
                 }
