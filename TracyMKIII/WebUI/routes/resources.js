@@ -127,7 +127,11 @@ router.get('/download/:mediaFileId', function(req, res, next) {
     request('http://localhost:8801/GetDownloadUrl?mediaFileId=' + req.params.mediaFileId + '&sessionId=' + req.cookies.sessionId, function (error, response, body) {
         if (!error && response.statusCode == 200) {
             var url = JSON.parse(body);
-            res.redirect(url.result);
+            if(url && url.result){
+                res.redirect(url.result);
+            }else{
+                res.send("Failed to get download url.");
+            }
         }
     });
 });
