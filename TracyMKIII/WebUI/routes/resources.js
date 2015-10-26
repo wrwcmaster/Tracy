@@ -27,6 +27,7 @@ function getWeight(episode) {
 
 function processMediaFiles(rawFiles){
     var dict = {};
+    if(!rawFiles) return dict;
     //convert to dict, use episode as key
     rawFiles.forEach(function (rawFile) {
         var key = (rawFile.mediaFile.episode != null) ? rawFile.mediaFile.episode : 'other';
