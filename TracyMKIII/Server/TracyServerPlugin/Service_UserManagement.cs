@@ -18,10 +18,19 @@ namespace TracyServerPlugin
         #region UserManagement
 
         
-        public GenericServiceResponse<User> Register(UserCreationInfo newUserInfo)
+        public GenericServiceResponse<string> Register(UserCreationInfo newUserInfo)
         {
-            var newUser = TracyFacade.Instance.UserManager.Register(newUserInfo);
-            return new GenericServiceResponse<User>(newUser);
+            return HandleRequest<GenericServiceResponse<string>>((response) =>
+            {
+                var newUser = TracyFacade.Instance.UserManager.Register(newUserInfo);
+                var loginResponse = Login(new LoginInfo() { UserName = newUserInfo.UserName, Password = newUserInfo.Password });
+                response.Result = loginResponse.Result;
+                if(response.ErrorCode == 0)
+                {
+                    response.ErrorCode = loginResponse.ErrorCode;
+                    response.ErrorMessage = loginResponse.ErrorMessage;
+                }
+            });
         }
 
         [DataContract]
@@ -49,6 +58,13 @@ namespace TracyServerPlugin
         public GenericServiceResponse<string> Login(LoginInfo loginInfo)
         {
             TracyFacade.Instance.UserManager.Login(loginInfo.UserName, loginInfo.Password);
+            if (SessionManager.CurrentSession == null)
+            {
+                var rtn = new GenericServiceResponse<string>(null);
+                rtn.ErrorCode = 403;
+                rtn.ErrorMessage = "Username and password not match.";
+                return rtn;
+            }
             return new GenericServiceResponse<string>(SessionManager.CurrentSession.Id);
         }
 

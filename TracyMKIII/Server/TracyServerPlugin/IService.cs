@@ -46,7 +46,7 @@ namespace TracyServerPlugin
         GenericServiceResponse<string> Login(Service.LoginInfo loginInfo);
         [OperationContract]
         [WebInvoke(ResponseFormat = WebMessageFormat.Json)]
-        GenericServiceResponse<User> Register(Service.UserCreationInfo newUserInfo);
+        GenericServiceResponse<string> Register(Service.UserCreationInfo newUserInfo);
 
 
         [OperationContract]

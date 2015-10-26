@@ -17,6 +17,21 @@ namespace TracyServerPlugin
     [ServiceBehavior(IncludeExceptionDetailInFaults = true)]
     public partial class Service : IService
     {
+        private T HandleRequest<T>(Action<T> operation) where T : ServiceResponse, new()
+        {
+            var response = new T();
+            try
+            {
+                operation(response);
+            }
+            catch (Exception ex)
+            {
+                response.ErrorCode = 500;
+                response.ErrorMessage = ex.GetType().ToString() + ": " + ex.Message + " " + ex.StackTrace;
+            }
+            return response;
+        }
+
         private T HandleRequest<T>(string sessionId, Action<T> operation) where T : ServiceResponse, new()
         {
             SessionManager.RestoreSession(sessionId);

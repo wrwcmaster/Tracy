@@ -38,6 +38,9 @@ router.post('/register', function(req, res, next) {
             url: 'http://localhost:8801/Register',
             json: param
         }, function (error, response, body) {
+            if (body) {
+                res.cookie('sessionId', body.result);
+            }
             res.send(body);
         });
     } else {
